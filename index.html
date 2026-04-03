@@ -1717,15 +1717,20 @@ function renderHomeFilters() {
   // Collect all unique assignees
   const atCount = {};
   all.forEach(t => {
-    if (t.assignee) { const k = t.assignee.toUpperCase(); atCount[k] = (atCount[k]||0) + 1; }
+    if (t.assignee) {
+      const norm = normalizeAssignee(t.assignee);
+      const k = norm.toLowerCase();
+      if (!atCount[k]) atCount[k] = { name: norm, count: 0 };
+      atCount[k].count++;
+    }
   });
 
   const assigneesEl = document.getElementById('home-assignees');
-  const assignees   = Object.entries(atCount).sort((a,b) => b[1]-a[1]);
+  const assignees = Object.values(atCount).sort((a,b) => b.count - a.count);
   if (assignees.length === 0) {
     assigneesEl.innerHTML = '<span class="global-empty">Sin responsables asignados aún</span>';
   } else {
-    assigneesEl.innerHTML = assignees.map(([name, count]) =>
+    assigneesEl.innerHTML = assignees.map(({ name, count }) =>
       `<button class="global-pill at-pill" onclick="goGlobalFilter('@','${escapeHtml(name)}')">&commat;${escapeHtml(name)} <span style="opacity:.6;font-weight:400">${count}</span></button>`
     ).join('');
   }

@@ -1257,7 +1257,7 @@ async function loadNews(source, tabEl) {
   try {
     const results = await Promise.all(
       src.feeds.map(async feed => {
-        const apiUrl = `${API}?rss_url=${encodeURIComponent(feed.url)}&count=5`;
+        const apiUrl = `${API}?rss_url=${encodeURIComponent(feed.url)}`;
         const res  = await fetch(apiUrl);
         const data = await res.json();
         if (data.status !== 'ok' || !data.items?.length) return [];

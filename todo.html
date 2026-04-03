@@ -799,7 +799,11 @@
       <div class="home-header-left">
         <h1>Bienvenido, Emilio.</h1>
         <p>Selecciona un perfil para continuar</p>
-        <button class="logout-btn" onclick="doLogout()" style="align-self:flex-start;margin-top:2px">⎋ Cerrar sesión</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:2px">
+          <button class="logout-btn" onclick="doLogout()">⎋ Cerrar sesión</button>
+          <button class="logout-btn" onclick="setupSync()" id="sync-btn">⇅ Sincronizar</button>
+          <span id="sync-badge" style="font-size:10px;color:#34c759;font-weight:600"></span>
+        </div>
       </div>
       <div class="home-header-center">
         <div class="widget-clock-block">
@@ -1103,7 +1107,12 @@ let currentFilter   = 'all';
 let activeTag       = null;   // per-profile chip filter
 let activeAssignee  = null;
 
-// ── STORAGE ───────────────────────────────────────────────
+// ── STORAGE + GITHUB SYNC ─────────────────────────────────
+const SYNC_REPO  = 'emilioguerraestevez/manager';
+const SYNC_FILE  = 'tasks.json';
+const SYNC_TOKEN_KEY = 'gh_sync_token';
+let   syncDebounce = null;
+
 function storageKey(p) { return `tasks_${p}`; }
 
 function loadTasks(profile) {
@@ -1112,9 +1121,66 @@ function loadTasks(profile) {
 }
 function saveTasks(profile, tasks) {
   localStorage.setItem(storageKey(profile), JSON.stringify(tasks));
+  scheduleSyncToGitHub();
 }
 function getTasks()   { return loadTasks(currentProfile); }
 function setTasks(t)  { saveTasks(currentProfile, t); }
+
+function scheduleSyncToGitHub() {
+  clearTimeout(syncDebounce);
+  syncDebounce = setTimeout(syncToGitHub, 2000);
+}
+
+async function ghHeaders() {
+  const token = localStorage.getItem(SYNC_TOKEN_KEY);
+  if (!token) return null;
+  return { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
+}
+
+async function syncToGitHub() {
+  const headers = await ghHeaders();
+  if (!headers) return;
+  const all = {};
+  Object.keys(PROFILES).forEach(p => { all[p] = loadTasks(p); });
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(all, null, 2))));
+  // Get current sha
+  const getRes  = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, { headers });
+  const getData = getRes.ok ? await getRes.json() : {};
+  await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, {
+    method: 'PUT', headers,
+    body: JSON.stringify({ message: 'sync tasks', content, sha: getData.sha })
+  });
+  showSyncBadge('✓');
+}
+
+async function loadFromGitHub() {
+  const headers = await ghHeaders();
+  if (!headers) return;
+  showSyncBadge('↓');
+  const res = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, { headers });
+  if (!res.ok) { showSyncBadge(''); return; }
+  const data  = await res.json();
+  const tasks = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
+  Object.keys(PROFILES).forEach(p => {
+    if (tasks[p] !== undefined) localStorage.setItem(storageKey(p), JSON.stringify(tasks[p]));
+  });
+  showSyncBadge('✓');
+}
+
+function showSyncBadge(state) {
+  const el = document.getElementById('sync-badge');
+  if (!el) return;
+  el.textContent = state === '✓' ? '✓ Sincronizado' : state === '↓' ? '↓ Sincronizando…' : '';
+}
+
+async function setupSync() {
+  const token = prompt('Pega tu GitHub token para activar sincronización multi-dispositivo:');
+  if (!token?.trim()) return;
+  localStorage.setItem(SYNC_TOKEN_KEY, token.trim());
+  await loadFromGitHub();
+  renderHomeFilters(); renderDashboard(); renderAgenda();
+  if (currentProfile) renderTasks();
+}
 
 function getAllTasks() {
   return Object.keys(PROFILES).flatMap(pid =>
@@ -1684,6 +1750,12 @@ function openTaskInProfile(profileId, taskId) {
 }
 
 // ── INIT ──────────────────────────────────────────────────
+(async () => {
+  if (localStorage.getItem(SYNC_TOKEN_KEY)) {
+    await loadFromGitHub();
+    renderHomeFilters(); renderDashboard(); renderAgenda();
+  }
+})();
 renderHomeFilters();
 renderDashboard();
 renderAgenda();
@@ -1744,6 +1816,9 @@ async function spotifyExchangeCode(code) {
     localStorage.removeItem(SPOTIFY_VERIFIER_KEY);
     history.replaceState({}, '', SPOTIFY_REDIRECT);
     await loadSpotifySong();
+  } else {
+    console.error('Spotify token exchange failed:', data);
+    renderSpotifyConnect();
   }
 }
 

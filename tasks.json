@@ -300,6 +300,17 @@
   ],
   "personal": [
     {
+      "id": 1775248826155,
+      "text": "Boletos Mundial RB 19600",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-08",
+      "time": "",
+      "assignees": [],
+      "tags": [],
+      "created": "2026-04-03T20:40:26.156Z"
+    },
+    {
       "id": 1775247783862,
       "text": "🍿 Traerle comida Divertida a Chispita",
       "done": false,

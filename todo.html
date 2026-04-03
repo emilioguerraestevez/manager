@@ -1932,6 +1932,8 @@ async function spotifyExchangeCode(code) {
   const data = await res.json();
   if (data.access_token) {
     localStorage.removeItem('sp_last_error');
+    localStorage.removeItem(SPOTIFY_LISTS_KEY);
+    localStorage.removeItem(SPOTIFY_LISTS_DATE);
     localStorage.setItem(SPOTIFY_TOKEN_KEY,  data.access_token);
     localStorage.setItem(SPOTIFY_EXPIRY_KEY, Date.now() + data.expires_in * 1000);
     if (data.refresh_token) localStorage.setItem(SPOTIFY_REFRESH_KEY, data.refresh_token);
@@ -1980,7 +1982,11 @@ async function getPlaylists(token) {
   while (url) {
     const res  = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
     const data = await res.json();
-    if (!data.items) break;
+    if (!data.items) {
+      const msg = data.error?.message || JSON.stringify(data.error || data);
+      localStorage.setItem('sp_last_error', 'Playlists: ' + msg);
+      break;
+    }
     data.items.forEach(p => { if (p?.tracks?.total > 0) lists.push({ id: p.id, total: p.tracks.total }); });
     url = data.next;
   }
@@ -2051,7 +2057,13 @@ async function loadSpotifySong() {
   if (!token) { renderSpotifyConnect(); return; }
 
   const track = await pickRandomTrack(token);
-  if (!track) return;
+  if (!track) {
+    if (!localStorage.getItem('sp_last_error'))
+      localStorage.setItem('sp_last_error', 'Sin canciones — revisa tus playlists en Spotify');
+    renderSpotifyConnect();
+    return;
+  }
+  localStorage.removeItem('sp_last_error');
   const song = songFromTrack(track, today);
   saveToHistory(track.id);
   localStorage.setItem(SPOTIFY_SONG_KEY, JSON.stringify(song));

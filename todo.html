@@ -1068,6 +1068,11 @@ async function doLogin() {
     sessionStorage.setItem(SESSION_KEY, '1');
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('login-password').value = '';
+    // Re-init Spotify after login (in case OAuth callback happened on login screen)
+    if (typeof loadSpotifySong === 'function') {
+      if (localStorage.getItem(SPOTIFY_TOKEN_KEY)) loadSpotifySong();
+      else renderSpotifyConnect();
+    }
   } else {
     const err = document.getElementById('login-error');
     err.textContent = 'Contraseña incorrecta';
@@ -1970,18 +1975,23 @@ async function shuffleSong() {
 
 // Handle OAuth callback + init
 (async () => {
-  const code = new URLSearchParams(location.search).get('code');
-  if (code) { await spotifyExchangeCode(code); return; }
-  if (localStorage.getItem(SPOTIFY_TOKEN_KEY)) { await loadSpotifySong(); }
-  else { renderSpotifyConnect(); }
+  try {
+    const code = new URLSearchParams(location.search).get('code');
+    if (code) { await spotifyExchangeCode(code); }
+    else if (localStorage.getItem(SPOTIFY_TOKEN_KEY)) { await loadSpotifySong(); }
+    else { renderSpotifyConnect(); }
 
-  // Refresh song at midnight
-  const now = new Date();
-  const msToMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1) - now;
-  setTimeout(async () => {
-    localStorage.removeItem(SPOTIFY_SONG_KEY);
-    await loadSpotifySong();
-  }, msToMidnight);
+    // Refresh song at midnight
+    const now = new Date();
+    const msToMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1) - now;
+    setTimeout(async () => {
+      localStorage.removeItem(SPOTIFY_SONG_KEY);
+      await loadSpotifySong();
+    }, msToMidnight);
+  } catch(e) {
+    console.error('Spotify init error:', e);
+    try { renderSpotifyConnect(); } catch(_) {}
+  }
 })();
 </script>
 </body>

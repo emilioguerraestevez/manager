@@ -775,6 +775,20 @@
 </head>
 <body>
 
+<!-- ── FIXED UI CORNERS ───────────────────────── -->
+<div style="position:fixed;bottom:20px;left:20px;z-index:90;display:flex;align-items:center;gap:7px;">
+  <button onclick="setupSync()" id="sync-btn"
+    style="background:none;border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:#c2c2c7;padding:5px 8px;border-radius:8px;transition:color .2s;letter-spacing:.1px;"
+    onmouseover="this.style.color='#8e8e93'" onmouseout="this.style.color='#c2c2c7'">⇅ Sincronizar</button>
+  <span id="sync-badge" style="font-size:10px;color:#34c759;font-weight:600;letter-spacing:.1px;"></span>
+</div>
+
+<div style="position:fixed;top:20px;right:20px;z-index:90;">
+  <button onclick="doLogout()"
+    style="background:none;border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:#c2c2c7;padding:5px 8px;border-radius:8px;transition:color .2s;letter-spacing:.1px;"
+    onmouseover="this.style.color='#8e8e93'" onmouseout="this.style.color='#c2c2c7'">⎋ Cerrar sesión</button>
+</div>
+
 <!-- ── SYNC MODAL ─────────────────────────────── -->
 <div id="sync-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.25);align-items:flex-start;justify-content:flex-start;padding:72px 24px;">
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);width:320px;">
@@ -814,11 +828,6 @@
       <div class="home-header-left">
         <h1>Bienvenido, Emilio.</h1>
         <p>Selecciona un perfil para continuar</p>
-        <div style="display:flex;align-items:center;gap:10px;margin-top:2px">
-          <button class="logout-btn" onclick="doLogout()">⎋ Cerrar sesión</button>
-          <button class="logout-btn" onclick="setupSync()" id="sync-btn">⇅ Sincronizar</button>
-          <span id="sync-badge" style="font-size:10px;color:#34c759;font-weight:600"></span>
-        </div>
       </div>
       <div class="home-header-center">
         <div class="widget-clock-block">

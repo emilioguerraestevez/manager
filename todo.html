@@ -771,6 +771,54 @@
     padding: 3px 8px; border-radius: 5px; transition: color .15s; line-height: 1;
   }
   .logout-btn:hover { color: var(--subtext); }
+
+  /* ── RESPONSIVE — iPad Air 4th gen portrait (≤900px) ── */
+  @media (max-width: 900px) {
+    .home-layout { padding: 16px; gap: 10px; }
+
+    .home-header-left  { width: 190px; }
+    .home-header-right { width: 190px; }
+    .home-header h1    { font-size: 20px; }
+    .home-header p     { font-size: 12px; }
+
+    .home-sidebar       { width: 190px; }
+    .home-sidebar-right { width: 190px; }
+
+    .home-header-right .widget-music { padding: 7px 10px; }
+    .widget-time  { font-size: 18px; }
+
+    .profile-logo-wrap { min-height: 80px; }
+    .profile-name      { font-size: 13px; }
+    .profile-role      { font-size: 11px; }
+    .profile-desc      { display: none; }
+    .profile-card      { padding: 16px 16px 14px; gap: 8px; }
+  }
+
+  /* ── RESPONSIVE — phone / very narrow (≤680px) ──────── */
+  @media (max-width: 680px) {
+    #profile-screen { overflow-y: auto; height: auto; min-height: 100vh; }
+    .home-layout    { padding: 16px; gap: 12px; height: auto; }
+
+    .home-header         { flex-wrap: wrap; gap: 10px; }
+    .home-header-left    { width: 100%; }
+    .home-header-center  { display: none; }
+    .home-header-right   { width: 100%; }
+    .home-header-right .widget-music { flex: 1; }
+
+    .home-columns   { flex-direction: column; flex: none; }
+    .home-sidebar   { width: 100%; display: flex; flex-direction: row; gap: 12px; height: 200px; }
+    .home-sidebar > * { flex: 1; }
+    .home-sidebar-right { width: 100%; height: auto; grid-template-rows: none; grid-template-columns: 1fr 1fr; }
+
+    .profiles-grid  { grid-template-columns: 1fr; grid-template-rows: repeat(4, auto); flex: none; }
+    .profile-card   { min-height: 120px; flex-direction: row; justify-content: flex-start; padding: 14px; }
+    .profile-logo-wrap { min-height: 60px; width: 60px; flex: none; }
+    .profile-text   { align-items: flex-start; text-align: left; }
+    .profile-desc   { display: none; }
+
+    .topbar { padding: 0 16px; height: 56px; }
+    .content { padding: 20px 16px 40px; }
+  }
 </style>
 </head>
 <body>
@@ -837,11 +885,11 @@
         <div class="widget-music" id="widget-music" title="Reproducir en Spotify" onclick="spotifyLogin()">
           <div class="widget-music-art" id="widget-art">♪</div>
           <div class="widget-music-info">
-            <div class="widget-music-label">Canción del día</div>
-            <div class="widget-music-title" id="widget-track">Canción del día</div>
-            <div class="widget-music-artist" id="widget-artist">Conectar para ver</div>
+            <div class="widget-music-label">Spotify</div>
+            <div class="widget-music-title" id="widget-track">Conectar Spotify</div>
+            <div class="widget-music-artist" id="widget-artist">Toca para vincular</div>
           </div>
-          <button class="widget-shuffle" id="widget-shuffle" onclick="event.stopPropagation();shuffleSong()" title="Otra canción">⇄</button>
+          <button class="widget-shuffle" id="widget-shuffle" onclick="event.stopPropagation();shuffleSong()" title="Otra canción" style="display:none">⇄</button>
         </div>
       </div>
     </div>

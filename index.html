@@ -712,7 +712,7 @@
         <div class="sidebar-title">Noticias</div>
         <div class="news-tabs">
           <button class="news-tab active" onclick="loadNews('bloomberg', this)">Bloomberg</button>
-          <button class="news-tab"        onclick="loadNews('reforma', this)">Reforma</button>
+          <button class="news-tab"        onclick="loadNews('columnas', this)">Editoriales</button>
         </div>
         <div class="news-list-wrap">
           <div class="news-list" id="news-list">
@@ -1224,11 +1224,20 @@ function renderGlobalFilter(type, value) {
 const RSS_SOURCES = {
   bloomberg: {
     label: 'Bloomberg',
-    url: 'https://news.google.com/rss/search?q=bloomberg+markets+finance&hl=en&gl=US&ceid=US:en'
+    feeds: [{
+      label: 'Bloomberg',
+      url: 'https://news.google.com/rss/search?q=geopolitics+OR+"foreign+policy"+OR+diplomacy+OR+"world+politics"+OR+"global+affairs"&hl=en&gl=US&ceid=US:en'
+    }]
   },
-  reforma: {
-    label: 'Reforma',
-    url: 'https://news.google.com/rss/search?q=site:reforma.com&hl=es-419&gl=MX&ceid=MX:es-419'
+  columnas: {
+    label: 'Editoriales',
+    feeds: [
+      { label: 'Reforma',       url: 'https://news.google.com/rss/search?q=columna+site:reforma.com&hl=es-419&gl=MX&ceid=MX:es-419' },
+      { label: 'Milenio',       url: 'https://news.google.com/rss/search?q=columna+site:milenio.com&hl=es-419&gl=MX&ceid=MX:es-419' },
+      { label: 'El Universal',  url: 'https://news.google.com/rss/search?q=columna+site:eluniversal.com.mx&hl=es-419&gl=MX&ceid=MX:es-419' },
+      { label: 'Excélsior',     url: 'https://news.google.com/rss/search?q=columna+site:excelsior.com.mx&hl=es-419&gl=MX&ceid=MX:es-419' },
+      { label: 'El Financiero', url: 'https://news.google.com/rss/search?q=columna+site:elfinanciero.com.mx&hl=es-419&gl=MX&ceid=MX:es-419' }
+    ]
   }
 };
 
@@ -1236,33 +1245,43 @@ let currentNewsSource = 'bloomberg';
 
 async function loadNews(source, tabEl) {
   currentNewsSource = source;
-  // Update tabs
   document.querySelectorAll('.news-tab').forEach(t => t.classList.remove('active'));
   if (tabEl) tabEl.classList.add('active');
 
   const listEl = document.getElementById('news-list');
   listEl.innerHTML = '<div class="news-loading">Cargando…</div>';
 
-  const rssUrl  = RSS_SOURCES[source].url;
-  const apiUrl  = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}&count=9`;
+  const src = RSS_SOURCES[source];
+  const API = 'https://api.rss2json.com/v1/api.json';
 
   try {
-    const res  = await fetch(apiUrl);
-    const data = await res.json();
+    const results = await Promise.all(
+      src.feeds.map(async feed => {
+        const apiUrl = `${API}?rss_url=${encodeURIComponent(feed.url)}&count=5`;
+        const res  = await fetch(apiUrl);
+        const data = await res.json();
+        if (data.status !== 'ok' || !data.items?.length) return [];
+        return data.items.map(item => ({ ...item, _feedLabel: feed.label }));
+      })
+    );
 
-    if (data.status !== 'ok' || !data.items?.length) {
-      throw new Error('Sin resultados');
-    }
+    const items = results.flat()
+      .sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate))
+      .slice(0, 10);
 
-    listEl.innerHTML = data.items.map(item => {
+    if (!items.length) throw new Error('Sin resultados');
+
+    listEl.innerHTML = items.map(item => {
       const date = item.pubDate
         ? new Date(item.pubDate).toLocaleDateString('es-MX', { day:'numeric', month:'short' })
         : '';
+      const title = item.title.replace(/\s*[-–]\s*[^-–]+$/, '').trim() || item.title;
       return `<div class="news-item" onclick="window.open('${escapeHtml(item.link)}','_blank')">
-        <div class="news-headline">${escapeHtml(item.title)}</div>
-        <div class="news-source">${RSS_SOURCES[source].label}${date ? ' · ' + date : ''}</div>
+        <div class="news-headline">${escapeHtml(title)}</div>
+        <div class="news-source">${escapeHtml(item._feedLabel)}${date ? ' · ' + date : ''}</div>
       </div>`;
     }).join('');
+
   } catch (e) {
     listEl.innerHTML = `<div class="news-error">
       No se pudo cargar el feed.<br>

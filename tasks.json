@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1775205993506,
+      "text": "Reunión 11am con Victor Gamboa",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-03",
+      "time": "10:34",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunion"
+      ],
+      "created": "2026-04-03T08:46:33.506Z"
+    },
+    {
       "id": 1775205961754,
       "text": "Invitar a comer a Irving Pineda",
       "done": false,

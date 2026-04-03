@@ -1690,14 +1690,26 @@ renderAgenda();
 loadNews('bloomberg', document.querySelector('.news-tab'));
 
 // ── SPOTIFY ───────────────────────────────────────────────
-const SPOTIFY_CLIENT_ID   = 'f9bd0341c1354b4bb48d2c6e8924b07e';
-const SPOTIFY_REDIRECT    = 'https://emilioguerraestevez.github.io/manager/';
-const SPOTIFY_SCOPE       = 'user-top-read';
-const SPOTIFY_TOKEN_KEY   = 'sp_token';
-const SPOTIFY_EXPIRY_KEY  = 'sp_expiry';
-const SPOTIFY_REFRESH_KEY = 'sp_refresh';
-const SPOTIFY_SONG_KEY    = 'sp_song_day';
-const SPOTIFY_VERIFIER_KEY= 'sp_verifier';
+const SPOTIFY_CLIENT_ID    = 'f9bd0341c1354b4bb48d2c6e8924b07e';
+const SPOTIFY_REDIRECT     = 'https://emilioguerraestevez.github.io/manager/';
+const SPOTIFY_SCOPE        = 'playlist-read-private playlist-read-collaborative';
+const SPOTIFY_SCOPE_VER    = 'v2'; // bump to force re-auth on scope change
+const SPOTIFY_TOKEN_KEY    = 'sp_token';
+const SPOTIFY_EXPIRY_KEY   = 'sp_expiry';
+const SPOTIFY_REFRESH_KEY  = 'sp_refresh';
+const SPOTIFY_SONG_KEY     = 'sp_song_day';
+const SPOTIFY_VERIFIER_KEY = 'sp_verifier';
+const SPOTIFY_LISTS_KEY    = 'sp_playlists';
+const SPOTIFY_LISTS_DATE   = 'sp_playlists_date';
+const SPOTIFY_HISTORY_KEY  = 'sp_history';
+const SPOTIFY_SCOPE_KEY    = 'sp_scope_ver';
+
+// Force re-auth if scope version changed
+if (localStorage.getItem(SPOTIFY_SCOPE_KEY) !== SPOTIFY_SCOPE_VER) {
+  ['sp_token','sp_expiry','sp_refresh','sp_song_day','sp_playlists','sp_playlists_date','sp_history']
+    .forEach(k => localStorage.removeItem(k));
+  localStorage.setItem(SPOTIFY_SCOPE_KEY, SPOTIFY_SCOPE_VER);
+}
 
 function b64url(buf) {
   return btoa(String.fromCharCode(...new Uint8Array(buf)))
@@ -1705,39 +1717,31 @@ function b64url(buf) {
 }
 
 async function spotifyLogin() {
-  const verifier = b64url(crypto.getRandomValues(new Uint8Array(32)));
+  const verifier  = b64url(crypto.getRandomValues(new Uint8Array(32)));
   localStorage.setItem(SPOTIFY_VERIFIER_KEY, verifier);
   const challenge = b64url(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier)));
-  const params = new URLSearchParams({
-    client_id: SPOTIFY_CLIENT_ID,
-    response_type: 'code',
-    redirect_uri: SPOTIFY_REDIRECT,
-    scope: SPOTIFY_SCOPE,
-    code_challenge_method: 'S256',
-    code_challenge: challenge
-  });
-  location.href = `https://accounts.spotify.com/authorize?${params}`;
+  location.href = `https://accounts.spotify.com/authorize?${new URLSearchParams({
+    client_id: SPOTIFY_CLIENT_ID, response_type: 'code',
+    redirect_uri: SPOTIFY_REDIRECT, scope: SPOTIFY_SCOPE,
+    code_challenge_method: 'S256', code_challenge: challenge
+  })}`;
 }
 
 async function spotifyExchangeCode(code) {
-  const verifier = localStorage.getItem(SPOTIFY_VERIFIER_KEY);
-  const res = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  const res  = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
-      client_id: SPOTIFY_CLIENT_ID,
-      grant_type: 'authorization_code',
+      client_id: SPOTIFY_CLIENT_ID, grant_type: 'authorization_code',
       code, redirect_uri: SPOTIFY_REDIRECT,
-      code_verifier: verifier
+      code_verifier: localStorage.getItem(SPOTIFY_VERIFIER_KEY)
     })
   });
   const data = await res.json();
   if (data.access_token) {
-    localStorage.setItem(SPOTIFY_TOKEN_KEY,   data.access_token);
-    localStorage.setItem(SPOTIFY_EXPIRY_KEY,  Date.now() + data.expires_in * 1000);
+    localStorage.setItem(SPOTIFY_TOKEN_KEY,  data.access_token);
+    localStorage.setItem(SPOTIFY_EXPIRY_KEY, Date.now() + data.expires_in * 1000);
     if (data.refresh_token) localStorage.setItem(SPOTIFY_REFRESH_KEY, data.refresh_token);
     localStorage.removeItem(SPOTIFY_VERIFIER_KEY);
-    // Clean URL
     history.replaceState({}, '', SPOTIFY_REDIRECT);
     await loadSpotifySong();
   }
@@ -1746,53 +1750,110 @@ async function spotifyExchangeCode(code) {
 async function spotifyRefresh() {
   const refresh = localStorage.getItem(SPOTIFY_REFRESH_KEY);
   if (!refresh) return false;
-  const res = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  const res  = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
-      client_id: SPOTIFY_CLIENT_ID,
-      grant_type: 'refresh_token',
-      refresh_token: refresh
+      client_id: SPOTIFY_CLIENT_ID, grant_type: 'refresh_token', refresh_token: refresh
     })
   });
   const data = await res.json();
-  if (data.access_token) {
-    localStorage.setItem(SPOTIFY_TOKEN_KEY,  data.access_token);
-    localStorage.setItem(SPOTIFY_EXPIRY_KEY, Date.now() + data.expires_in * 1000);
-    return true;
-  }
-  return false;
+  if (!data.access_token) return false;
+  localStorage.setItem(SPOTIFY_TOKEN_KEY,  data.access_token);
+  localStorage.setItem(SPOTIFY_EXPIRY_KEY, Date.now() + data.expires_in * 1000);
+  return true;
 }
 
 async function getSpotifyToken() {
   const expiry = parseInt(localStorage.getItem(SPOTIFY_EXPIRY_KEY) || '0');
   if (Date.now() < expiry - 60000) return localStorage.getItem(SPOTIFY_TOKEN_KEY);
-  const ok = await spotifyRefresh();
-  return ok ? localStorage.getItem(SPOTIFY_TOKEN_KEY) : null;
+  return (await spotifyRefresh()) ? localStorage.getItem(SPOTIFY_TOKEN_KEY) : null;
 }
 
-async function loadSpotifySong() {
+// Fetch & cache all playlists (id + total tracks), refresh once a day
+async function getPlaylists(token) {
   const today = localDateISO(new Date());
-  const cached = JSON.parse(localStorage.getItem(SPOTIFY_SONG_KEY) || 'null');
-  if (cached && cached.date === today) { renderSpotifyWidget(cached); return; }
+  if (localStorage.getItem(SPOTIFY_LISTS_DATE) === today) {
+    const cached = localStorage.getItem(SPOTIFY_LISTS_KEY);
+    if (cached) return JSON.parse(cached);
+  }
+  let lists = [], url = 'https://api.spotify.com/v1/me/playlists?limit=50';
+  while (url) {
+    const res  = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (!data.items) break;
+    data.items.forEach(p => { if (p?.tracks?.total > 0) lists.push({ id: p.id, total: p.tracks.total }); });
+    url = data.next;
+  }
+  localStorage.setItem(SPOTIFY_LISTS_KEY,  JSON.stringify(lists));
+  localStorage.setItem(SPOTIFY_LISTS_DATE, today);
+  return lists;
+}
 
-  const token = await getSpotifyToken();
-  if (!token) { renderSpotifyConnect(); return; }
+// Pick a truly random track across all playlists, avoid recent history
+async function pickRandomTrack(token, retries = 4) {
+  const lists = await getPlaylists(token);
+  if (!lists.length) return null;
 
-  const res  = await fetch('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=medium_term',
-    { headers: { Authorization: `Bearer ${token}` } });
+  const history = JSON.parse(localStorage.getItem(SPOTIFY_HISTORY_KEY) || '[]');
+  const total   = lists.reduce((s, p) => s + p.total, 0);
+
+  for (let attempt = 0; attempt < retries; attempt++) {
+    // Weighted random playlist selection
+    let rand = Math.floor(Math.random() * total);
+    let playlist;
+    for (const p of lists) { if (rand < p.total) { playlist = p; break; } rand -= p.total; }
+    if (!playlist) playlist = lists[0];
+
+    const offset = Math.floor(Math.random() * playlist.total);
+    const res    = await fetch(
+      `https://api.spotify.com/v1/playlists/${playlist.id}/tracks?limit=1&offset=${offset}&fields=items(track(id,name,artists(name),album(images),external_urls))`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const data  = await res.json();
+    const track = data.items?.[0]?.track;
+    if (!track?.id) continue; // skip local files
+    if (!history.includes(track.id)) return track;
+  }
+  // Fallback: accept any track
+  const offset = Math.floor(Math.random() * lists[0].total);
+  const res    = await fetch(
+    `https://api.spotify.com/v1/playlists/${lists[0].id}/tracks?limit=1&offset=${offset}&fields=items(track(id,name,artists(name),album(images),external_urls))`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
   const data = await res.json();
-  if (!data.items?.length) return;
+  return data.items?.[0]?.track || null;
+}
 
-  const dayIdx = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-  const track  = data.items[dayIdx % data.items.length];
-  const song = {
-    date:   today,
+function saveToHistory(id) {
+  const h = JSON.parse(localStorage.getItem(SPOTIFY_HISTORY_KEY) || '[]');
+  h.push(id);
+  if (h.length > 100) h.shift();
+  localStorage.setItem(SPOTIFY_HISTORY_KEY, JSON.stringify(h));
+}
+
+function songFromTrack(track, date) {
+  return {
+    date,
+    id:     track.id,
     name:   track.name,
     artist: track.artists.map(a => a.name).join(', '),
     art:    track.album.images[1]?.url || track.album.images[0]?.url || '',
     url:    track.external_urls.spotify
   };
+}
+
+async function loadSpotifySong() {
+  const today  = localDateISO(new Date());
+  const cached = JSON.parse(localStorage.getItem(SPOTIFY_SONG_KEY) || 'null');
+  if (cached?.date === today) { renderSpotifyWidget(cached); return; }
+
+  const token = await getSpotifyToken();
+  if (!token) { renderSpotifyConnect(); return; }
+
+  const track = await pickRandomTrack(token);
+  if (!track) return;
+  const song = songFromTrack(track, today);
+  saveToHistory(track.id);
   localStorage.setItem(SPOTIFY_SONG_KEY, JSON.stringify(song));
   renderSpotifyWidget(song);
 }
@@ -1801,9 +1862,10 @@ function renderSpotifyWidget(song) {
   document.getElementById('widget-track').textContent  = song.name;
   document.getElementById('widget-artist').textContent = song.artist;
   const artEl = document.getElementById('widget-art');
-  if (song.art) artEl.innerHTML = `<img src="${song.art}" alt="cover">`;
+  if (song.art) artEl.innerHTML = `<img src="${song.art}" alt="">`;
   document.getElementById('widget-music').onclick = () => window.open(song.url, '_blank');
   document.querySelector('.widget-music-label').textContent = 'Canción del día';
+  document.getElementById('widget-shuffle').style.display = '';
 }
 
 function renderSpotifyConnect() {
@@ -1820,42 +1882,27 @@ async function shuffleSong() {
 
   const btn = document.getElementById('widget-shuffle');
   btn.classList.add('spinning');
-  setTimeout(() => btn.classList.remove('spinning'), 300);
 
-  const res  = await fetch('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=medium_term',
-    { headers: { Authorization: `Bearer ${token}` } });
-  const data = await res.json();
-  if (!data.items?.length) return;
+  const track = await pickRandomTrack(token);
+  btn.classList.remove('spinning');
+  if (!track) return;
 
-  const current = JSON.parse(localStorage.getItem(SPOTIFY_SONG_KEY) || 'null');
-  let track;
-  do {
-    track = data.items[Math.floor(Math.random() * data.items.length)];
-  } while (data.items.length > 1 && track.id === current?.id);
-
-  const song = {
-    date:   localDateISO(new Date()),
-    name:   track.name,
-    artist: track.artists.map(a => a.name).join(', '),
-    art:    track.album.images[1]?.url || track.album.images[0]?.url || '',
-    url:    track.external_urls.spotify,
-    id:     track.id
-  };
+  const song = songFromTrack(track, localDateISO(new Date()));
+  saveToHistory(track.id);
   localStorage.setItem(SPOTIFY_SONG_KEY, JSON.stringify(song));
   renderSpotifyWidget(song);
 }
 
-// Handle OAuth callback
+// Handle OAuth callback + init
 (async () => {
-  const params = new URLSearchParams(location.search);
-  const code   = params.get('code');
+  const code = new URLSearchParams(location.search).get('code');
   if (code) { await spotifyExchangeCode(code); return; }
-  const token = localStorage.getItem(SPOTIFY_TOKEN_KEY);
-  if (token) { await loadSpotifySong(); } else { renderSpotifyConnect(); }
+  if (localStorage.getItem(SPOTIFY_TOKEN_KEY)) { await loadSpotifySong(); }
+  else { renderSpotifyConnect(); }
 
   // Refresh song at midnight
   const now = new Date();
-  const msToMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1) - now;
+  const msToMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1) - now;
   setTimeout(async () => {
     localStorage.removeItem(SPOTIFY_SONG_KEY);
     await loadSpotifySong();

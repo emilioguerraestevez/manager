@@ -257,6 +257,19 @@
   ],
   "personal": [
     {
+      "id": 1775203464423,
+      "text": "Seguir desarrollando egeManager",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-03",
+      "time": "11:00",
+      "assignee": "EGE",
+      "tags": [
+        "devops"
+      ],
+      "created": "2026-04-03T08:04:24.423Z"
+    },
+    {
       "id": 1775199598170,
       "text": "Entregarle totalplay a Mel",
       "done": false,

@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>EGE — Task Manager</title>
-<link rel="icon" href="Logos_EGE/Logo_EGE.JPG">
-<link rel="apple-touch-icon" href="Logos_EGE/Logo_EGE.JPG">
+<link rel="icon" id="favicon" href="Logos_EGE/Logo_EGE.JPG">
+<link rel="apple-touch-icon" id="apple-touch-icon" href="Logos_EGE/Logo_EGE.JPG">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1908,6 +1908,26 @@ renderDashboard();
 renderAgenda();
 loadNews('bloomberg', document.querySelector('.news-tab'));
 setInterval(() => loadNews(currentNewsSource, document.querySelector('.news-tab.active')), 60 * 60 * 1000);
+
+// ── CIRCULAR FAVICON ──────────────────────────────────────
+(function() {
+  const img = new Image();
+  img.onload = function() {
+    const size = 64, pad = 6;
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    const ctx = c.getContext('2d');
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(img, pad, pad, size - pad*2, size - pad*2);
+    const url = c.toDataURL('image/png');
+    document.getElementById('favicon').href = url;
+    document.getElementById('apple-touch-icon').href = url;
+  };
+  img.src = 'Logos_EGE/Logo_EGE.JPG';
+})();
 
 // ── SPOTIFY ───────────────────────────────────────────────
 const SPOTIFY_CLIENT_ID    = 'f9bd0341c1354b4bb48d2c6e8924b07e';

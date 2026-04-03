@@ -1679,6 +1679,147 @@ renderHomeFilters();
 renderDashboard();
 renderAgenda();
 loadNews('bloomberg', document.querySelector('.news-tab'));
+
+// ── SPOTIFY ───────────────────────────────────────────────
+const SPOTIFY_CLIENT_ID   = 'f9bd0341c1354b4bb48d2c6e8924b07e';
+const SPOTIFY_REDIRECT    = 'https://emilioguerraestevez.github.io/manager/';
+const SPOTIFY_SCOPE       = 'user-top-read';
+const SPOTIFY_TOKEN_KEY   = 'sp_token';
+const SPOTIFY_EXPIRY_KEY  = 'sp_expiry';
+const SPOTIFY_REFRESH_KEY = 'sp_refresh';
+const SPOTIFY_SONG_KEY    = 'sp_song_day';
+const SPOTIFY_VERIFIER_KEY= 'sp_verifier';
+
+function b64url(buf) {
+  return btoa(String.fromCharCode(...new Uint8Array(buf)))
+    .replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+}
+
+async function spotifyLogin() {
+  const verifier = b64url(crypto.getRandomValues(new Uint8Array(32)));
+  localStorage.setItem(SPOTIFY_VERIFIER_KEY, verifier);
+  const challenge = b64url(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier)));
+  const params = new URLSearchParams({
+    client_id: SPOTIFY_CLIENT_ID,
+    response_type: 'code',
+    redirect_uri: SPOTIFY_REDIRECT,
+    scope: SPOTIFY_SCOPE,
+    code_challenge_method: 'S256',
+    code_challenge: challenge
+  });
+  location.href = `https://accounts.spotify.com/authorize?${params}`;
+}
+
+async function spotifyExchangeCode(code) {
+  const verifier = localStorage.getItem(SPOTIFY_VERIFIER_KEY);
+  const res = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: SPOTIFY_CLIENT_ID,
+      grant_type: 'authorization_code',
+      code, redirect_uri: SPOTIFY_REDIRECT,
+      code_verifier: verifier
+    })
+  });
+  const data = await res.json();
+  if (data.access_token) {
+    localStorage.setItem(SPOTIFY_TOKEN_KEY,   data.access_token);
+    localStorage.setItem(SPOTIFY_EXPIRY_KEY,  Date.now() + data.expires_in * 1000);
+    if (data.refresh_token) localStorage.setItem(SPOTIFY_REFRESH_KEY, data.refresh_token);
+    localStorage.removeItem(SPOTIFY_VERIFIER_KEY);
+    // Clean URL
+    history.replaceState({}, '', SPOTIFY_REDIRECT);
+    await loadSpotifySong();
+  }
+}
+
+async function spotifyRefresh() {
+  const refresh = localStorage.getItem(SPOTIFY_REFRESH_KEY);
+  if (!refresh) return false;
+  const res = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: SPOTIFY_CLIENT_ID,
+      grant_type: 'refresh_token',
+      refresh_token: refresh
+    })
+  });
+  const data = await res.json();
+  if (data.access_token) {
+    localStorage.setItem(SPOTIFY_TOKEN_KEY,  data.access_token);
+    localStorage.setItem(SPOTIFY_EXPIRY_KEY, Date.now() + data.expires_in * 1000);
+    return true;
+  }
+  return false;
+}
+
+async function getSpotifyToken() {
+  const expiry = parseInt(localStorage.getItem(SPOTIFY_EXPIRY_KEY) || '0');
+  if (Date.now() < expiry - 60000) return localStorage.getItem(SPOTIFY_TOKEN_KEY);
+  const ok = await spotifyRefresh();
+  return ok ? localStorage.getItem(SPOTIFY_TOKEN_KEY) : null;
+}
+
+async function loadSpotifySong() {
+  const today = localDateISO(new Date());
+  const cached = JSON.parse(localStorage.getItem(SPOTIFY_SONG_KEY) || 'null');
+  if (cached && cached.date === today) { renderSpotifyWidget(cached); return; }
+
+  const token = await getSpotifyToken();
+  if (!token) { renderSpotifyConnect(); return; }
+
+  const res  = await fetch('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=medium_term',
+    { headers: { Authorization: `Bearer ${token}` } });
+  const data = await res.json();
+  if (!data.items?.length) return;
+
+  const dayIdx = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+  const track  = data.items[dayIdx % data.items.length];
+  const song = {
+    date:   today,
+    name:   track.name,
+    artist: track.artists.map(a => a.name).join(', '),
+    art:    track.album.images[1]?.url || track.album.images[0]?.url || '',
+    url:    track.external_urls.spotify
+  };
+  localStorage.setItem(SPOTIFY_SONG_KEY, JSON.stringify(song));
+  renderSpotifyWidget(song);
+}
+
+function renderSpotifyWidget(song) {
+  document.getElementById('widget-track').textContent  = song.name;
+  document.getElementById('widget-artist').textContent = song.artist;
+  const artEl = document.getElementById('widget-art');
+  if (song.art) artEl.innerHTML = `<img src="${song.art}" alt="cover">`;
+  document.getElementById('widget-music').onclick = () => window.open(song.url, '_blank');
+  document.querySelector('.widget-music-label').textContent = 'Canción del día';
+}
+
+function renderSpotifyConnect() {
+  document.getElementById('widget-track').textContent  = 'Conectar Spotify';
+  document.getElementById('widget-artist').textContent = 'Toca para vincular';
+  document.getElementById('widget-music').onclick = spotifyLogin;
+  document.querySelector('.widget-music-label').textContent = 'Spotify';
+}
+
+// Handle OAuth callback
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const code   = params.get('code');
+  if (code) { await spotifyExchangeCode(code); return; }
+  const token = localStorage.getItem(SPOTIFY_TOKEN_KEY);
+  if (token) { await loadSpotifySong(); } else { renderSpotifyConnect(); }
+
+  // Refresh song at midnight
+  const now = new Date();
+  const msToMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1) - now;
+  setTimeout(async () => {
+    localStorage.removeItem(SPOTIFY_SONG_KEY);
+    await loadSpotifySong();
+  }, msToMidnight);
+})();
 </script>
 </body>
 </html>

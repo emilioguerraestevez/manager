@@ -358,6 +358,7 @@
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 14px 14px 12px;
     box-shadow: var(--shadow-sm); min-height: 0; overflow: hidden;
+    display: flex; flex-direction: column;
   }
 
   .global-section-label {
@@ -367,12 +368,15 @@
   }
 
   .global-pills-row {
-    display: flex; flex-wrap: wrap; gap: 5px;
+    display: flex; flex-wrap: wrap; gap: 4px;
+    overflow-y: auto; flex: 1; min-height: 0; align-content: flex-start;
   }
+  .global-pills-row::-webkit-scrollbar { width: 3px; }
+  .global-pills-row::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
   .global-pill {
-    font-family: var(--font); font-size: 11px; font-weight: 500;
-    padding: 4px 10px; border-radius: 100px;
+    font-family: var(--font); font-size: 10px; font-weight: 500;
+    padding: 3px 8px; border-radius: 100px;
     border: 1px solid var(--border); background: var(--surface2);
     color: var(--subtext); cursor: pointer;
     transition: background .15s, color .15s, border-color .15s;

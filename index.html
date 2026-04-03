@@ -733,8 +733,8 @@
     position: fixed; inset: 0; z-index: 9999;
     background: var(--bg);
     display: flex; flex-direction: column;
-    align-items: center; justify-content: flex-start;
-    padding-top: 6vh; gap: 0;
+    align-items: center; justify-content: center;
+    gap: 0;
   }
   .login-card {
     background: var(--surface); border: 1px solid var(--border);
@@ -769,7 +769,7 @@
   }
   .login-btn:hover { opacity: .82; }
   .login-error {
-    font-size: 12px; color: #c0392b; text-align: center; min-height: 14px;
+    font-size: 12px; color: #c0392b; text-align: center;
   }
   /* ── LOGOUT ─────────────────────────────────── */
   .logout-btn {
@@ -861,10 +861,12 @@
       <div class="login-title">Bienvenido, Emilio.</div>
       <div class="login-subtitle">Ingresa tu contraseña para continuar</div>
     </div>
-    <input class="login-input" type="password" id="login-password"
-      placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
-    <div class="login-error" id="login-error"></div>
-    <button class="login-btn" onclick="doLogin()">Entrar</button>
+    <div style="width:100%;display:flex;flex-direction:column;gap:8px;">
+      <input class="login-input" type="password" id="login-password"
+        placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
+      <div class="login-error" id="login-error"></div>
+      <button class="login-btn" onclick="doLogin()">Entrar</button>
+    </div>
   </div>
 </div>
 

@@ -270,11 +270,14 @@
       "done": false,
       "priority": "high",
       "due": "2026-04-07",
-      "assignee": "EGE",
       "tags": [
-        "gira"
+        "grabacion"
       ],
-      "created": "2026-04-03T04:32:37.338Z"
+      "created": "2026-04-03T04:32:37.338Z",
+      "time": "",
+      "assignees": [
+        "EGE"
+      ]
     },
     {
       "id": 1775190732003,

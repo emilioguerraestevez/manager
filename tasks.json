@@ -379,15 +379,18 @@
     },
     {
       "id": 1775190823565,
-      "text": "Pagar la renta.",
+      "text": "Pagar la renta",
       "done": false,
       "priority": "high",
       "due": "2026-04-17",
-      "assignee": "EGE",
       "tags": [
         "pago"
       ],
-      "created": "2026-04-03T04:33:43.565Z"
+      "created": "2026-04-03T04:33:43.565Z",
+      "time": "",
+      "assignees": [
+        "EGE"
+      ]
     }
   ]
 }

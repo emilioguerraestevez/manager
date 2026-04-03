@@ -90,6 +90,19 @@
   ],
   "cosmos": [
     {
+      "id": 1775203341298,
+      "text": "Desarrollo AstraMaps y Eureka! 2.0",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-30",
+      "time": "",
+      "assignee": "Pinguino",
+      "tags": [
+        "devops"
+      ],
+      "created": "2026-04-03T08:02:21.298Z"
+    },
+    {
       "id": 1775201524376,
       "text": "Coordinar una reunión operativa URGENTE",
       "done": false,

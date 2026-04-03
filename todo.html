@@ -776,16 +776,10 @@
 <body>
 
 <!-- ── FIXED UI CORNERS ───────────────────────── -->
-<div style="position:fixed;bottom:20px;left:20px;z-index:90;display:flex;align-items:center;gap:7px;">
-  <button onclick="setupSync()" id="sync-btn"
-    style="background:none;border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:#c2c2c7;padding:5px 8px;border-radius:8px;transition:color .2s;letter-spacing:.1px;"
-    onmouseover="this.style.color='#8e8e93'" onmouseout="this.style.color='#c2c2c7'">⇅ Sincronizar</button>
-  <span id="sync-badge" style="font-size:10px;color:#34c759;font-weight:600;letter-spacing:.1px;"></span>
-</div>
-
-<div style="position:fixed;top:20px;right:20px;z-index:90;">
+<!-- ── LOGOUT (fixed, bottom-left, outside grid) ─ -->
+<div style="position:fixed;bottom:14px;left:22px;z-index:90;">
   <button onclick="doLogout()"
-    style="background:none;border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:#c2c2c7;padding:5px 8px;border-radius:8px;transition:color .2s;letter-spacing:.1px;"
+    style="background:none;border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:#c2c2c7;padding:0;letter-spacing:.1px;transition:color .2s;"
     onmouseover="this.style.color='#8e8e93'" onmouseout="this.style.color='#c2c2c7'">⎋ Cerrar sesión</button>
 </div>
 
@@ -828,6 +822,10 @@
       <div class="home-header-left">
         <h1>Bienvenido, Emilio.</h1>
         <p>Selecciona un perfil para continuar</p>
+        <div style="display:flex;align-items:center;gap:7px;margin-top:5px;min-height:16px;">
+          <span id="sync-badge" style="font-size:11px;font-weight:600;"></span>
+          <button id="sync-retry-btn" onclick="manualSync()" style="display:none;background:none;border:none;cursor:pointer;font-family:var(--font);font-size:11px;color:#c2c2c7;padding:1px 6px;border-radius:5px;transition:color .15s;" onmouseover="this.style.color='#8e8e93'" onmouseout="this.style.color='#c2c2c7'">⇅ Reintentar</button>
+        </div>
       </div>
       <div class="home-header-center">
         <div class="widget-clock-block">
@@ -1169,37 +1167,58 @@ async function ghHeaders() {
 async function syncToGitHub() {
   const headers = await ghHeaders();
   if (!headers) return;
-  const all = {};
-  Object.keys(PROFILES).forEach(p => { all[p] = loadTasks(p); });
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(all, null, 2))));
-  // Get current sha
-  const getRes  = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, { headers });
-  const getData = getRes.ok ? await getRes.json() : {};
-  await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, {
-    method: 'PUT', headers,
-    body: JSON.stringify({ message: 'sync tasks', content, sha: getData.sha })
-  });
-  showSyncBadge('✓');
+  try {
+    showSyncBadge('syncing');
+    const all = {};
+    Object.keys(PROFILES).forEach(p => { all[p] = loadTasks(p); });
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(all, null, 2))));
+    const getRes  = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, { headers });
+    const getData = getRes.ok ? await getRes.json() : {};
+    const putRes  = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, {
+      method: 'PUT', headers,
+      body: JSON.stringify({ message: 'sync tasks', content, sha: getData.sha })
+    });
+    if (!putRes.ok) throw new Error('put failed');
+    showSyncBadge('ok');
+  } catch { showSyncBadge('error'); }
 }
 
 async function loadFromGitHub() {
   const headers = await ghHeaders();
   if (!headers) return;
-  showSyncBadge('↓');
-  const res = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, { headers });
-  if (!res.ok) { showSyncBadge(''); return; }
-  const data  = await res.json();
-  const tasks = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
-  Object.keys(PROFILES).forEach(p => {
-    if (tasks[p] !== undefined) localStorage.setItem(storageKey(p), JSON.stringify(tasks[p]));
-  });
-  showSyncBadge('✓');
+  try {
+    showSyncBadge('syncing');
+    const res = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, { headers });
+    if (!res.ok) throw new Error('fetch failed');
+    const data  = await res.json();
+    const tasks = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
+    Object.keys(PROFILES).forEach(p => {
+      if (tasks[p] !== undefined) localStorage.setItem(storageKey(p), JSON.stringify(tasks[p]));
+    });
+    showSyncBadge('ok');
+  } catch { showSyncBadge('error'); }
 }
 
 function showSyncBadge(state) {
-  const el = document.getElementById('sync-badge');
-  if (!el) return;
-  el.textContent = state === '✓' ? '✓ Sincronizado' : state === '↓' ? '↓ Sincronizando…' : '';
+  const badge = document.getElementById('sync-badge');
+  const retry = document.getElementById('sync-retry-btn');
+  if (!badge) return;
+  if (state === 'ok') {
+    badge.textContent = '✓ Sincronizado';
+    badge.style.color = '#34c759';
+    if (retry) retry.style.display = 'none';
+  } else if (state === 'syncing') {
+    badge.textContent = '↓ Sincronizando…';
+    badge.style.color = '#8e8e93';
+    if (retry) retry.style.display = 'none';
+  } else if (state === 'error') {
+    badge.textContent = '✕ No sincronizado';
+    badge.style.color = '#ff3b30';
+    if (retry) retry.style.display = '';
+  } else {
+    badge.textContent = '';
+    if (retry) retry.style.display = 'none';
+  }
 }
 
 function setupSync() {
@@ -1215,11 +1234,21 @@ async function confirmSync() {
   document.getElementById('sync-modal').style.display = 'none';
   if (!token) return;
   localStorage.setItem(SYNC_TOKEN_KEY, token);
-  showSyncBadge('↓');
   await loadFromGitHub();
   renderHomeFilters(); renderDashboard(); renderAgenda();
   if (currentProfile) renderTasks();
 }
+
+async function manualSync() {
+  await loadFromGitHub();
+  renderHomeFilters(); renderDashboard(); renderAgenda();
+  if (currentProfile) renderTasks();
+}
+
+// Auto-sync from GitHub every 5 minutes
+setInterval(() => {
+  if (localStorage.getItem(SYNC_TOKEN_KEY)) manualSync();
+}, 5 * 60 * 1000);
 
 function getAllTasks() {
   return Object.keys(PROFILES).flatMap(pid =>

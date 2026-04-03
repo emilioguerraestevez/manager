@@ -190,6 +190,19 @@
   ],
   "personal": [
     {
+      "id": 1775198824659,
+      "text": "Transferir 30k a Mel",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-16",
+      "time": "",
+      "assignee": "EGE",
+      "tags": [
+        "pago"
+      ],
+      "created": "2026-04-03T06:47:04.660Z"
+    },
+    {
       "id": 1775192309246,
       "text": "Cobrarle a Arturo Torres.",
       "done": false,

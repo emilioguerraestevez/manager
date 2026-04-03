@@ -90,6 +90,19 @@
   ],
   "cosmos": [
     {
+      "id": 1775201524376,
+      "text": "Coordinar una reunión operativa URGENTE",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-06",
+      "time": "14:00",
+      "assignee": "NANCY",
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-03T07:32:04.376Z"
+    },
+    {
       "id": 1775199363369,
       "text": "Gestionar operación Digitalización cuauhtemoc",
       "done": false,

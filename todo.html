@@ -775,6 +775,21 @@
 </head>
 <body>
 
+<!-- ── SYNC MODAL ─────────────────────────────── -->
+<div id="sync-modal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.25);align-items:flex-start;justify-content:flex-start;padding:72px 24px;">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);width:320px;">
+    <div style="font-size:14px;font-weight:600;margin-bottom:4px;color:var(--text)">Sincronización GitHub</div>
+    <div style="font-size:12px;color:var(--subtext);margin-bottom:14px">Pega tu GitHub Personal Access Token para sincronizar entre dispositivos.</div>
+    <input id="sync-token-input" type="password" placeholder="ghp_…"
+      style="width:100%;font-family:var(--font);font-size:13px;background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;padding:10px 12px;outline:none;color:var(--text);margin-bottom:12px;"
+      onkeydown="if(event.key==='Enter')confirmSync()">
+    <div style="display:flex;gap:8px;">
+      <button onclick="confirmSync()" style="flex:1;font-family:var(--font);font-size:13px;font-weight:600;background:var(--text);color:#fff;border:none;border-radius:9px;padding:10px;cursor:pointer;">Conectar</button>
+      <button onclick="document.getElementById('sync-modal').style.display='none'" style="font-family:var(--font);font-size:13px;background:var(--surface2);color:var(--subtext);border:1px solid var(--border);border-radius:9px;padding:10px 14px;cursor:pointer;">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── LOGIN ─────────────────────────────────── -->
 <div id="login-screen">
   <div class="login-card">
@@ -812,7 +827,7 @@
         </div>
       </div>
       <div class="home-header-right">
-        <div class="widget-music" id="widget-music" title="Reproducir en Spotify">
+        <div class="widget-music" id="widget-music" title="Reproducir en Spotify" onclick="spotifyLogin()">
           <div class="widget-music-art" id="widget-art">♪</div>
           <div class="widget-music-info">
             <div class="widget-music-label">Canción del día</div>
@@ -1178,10 +1193,20 @@ function showSyncBadge(state) {
   el.textContent = state === '✓' ? '✓ Sincronizado' : state === '↓' ? '↓ Sincronizando…' : '';
 }
 
-async function setupSync() {
-  const token = prompt('Pega tu GitHub token para activar sincronización multi-dispositivo:');
-  if (!token?.trim()) return;
-  localStorage.setItem(SYNC_TOKEN_KEY, token.trim());
+function setupSync() {
+  const modal = document.getElementById('sync-modal');
+  const input = document.getElementById('sync-token-input');
+  input.value = localStorage.getItem(SYNC_TOKEN_KEY) || '';
+  modal.style.display = 'flex';
+  setTimeout(() => input.focus(), 50);
+}
+
+async function confirmSync() {
+  const token = document.getElementById('sync-token-input').value.trim();
+  document.getElementById('sync-modal').style.display = 'none';
+  if (!token) return;
+  localStorage.setItem(SYNC_TOKEN_KEY, token);
+  showSyncBadge('↓');
   await loadFromGitHub();
   renderHomeFilters(); renderDashboard(); renderAgenda();
   if (currentProfile) renderTasks();

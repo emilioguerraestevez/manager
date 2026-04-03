@@ -113,6 +113,13 @@
   .widget-music-label { font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--placeholder); }
   .widget-music-title { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .widget-music-artist { font-size: 11px; color: var(--subtext); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .widget-shuffle {
+    background: none; border: none; cursor: pointer; padding: 4px; flex-shrink: 0;
+    color: var(--placeholder); font-size: 14px; line-height: 1;
+    border-radius: 6px; transition: color .15s, transform .3s;
+  }
+  .widget-shuffle:hover { color: var(--subtext); }
+  .widget-shuffle.spinning { transform: rotate(360deg); }
 
   .home-columns {
     display: flex;
@@ -800,13 +807,14 @@
         </div>
       </div>
       <div class="home-header-right">
-        <div class="widget-music" id="widget-music" title="Conectar Apple Music">
+        <div class="widget-music" id="widget-music" title="Reproducir en Spotify">
           <div class="widget-music-art" id="widget-art">♪</div>
           <div class="widget-music-info">
-            <div class="widget-music-label">Apple Music</div>
+            <div class="widget-music-label">Canción del día</div>
             <div class="widget-music-title" id="widget-track">Canción del día</div>
             <div class="widget-music-artist" id="widget-artist">Conectar para ver</div>
           </div>
+          <button class="widget-shuffle" id="widget-shuffle" onclick="event.stopPropagation();shuffleSong()" title="Otra canción">⇄</button>
         </div>
       </div>
     </div>
@@ -1802,6 +1810,38 @@ function renderSpotifyConnect() {
   document.getElementById('widget-artist').textContent = 'Toca para vincular';
   document.getElementById('widget-music').onclick = spotifyLogin;
   document.querySelector('.widget-music-label').textContent = 'Spotify';
+  document.getElementById('widget-shuffle').style.display = 'none';
+}
+
+async function shuffleSong() {
+  const token = await getSpotifyToken();
+  if (!token) { spotifyLogin(); return; }
+
+  const btn = document.getElementById('widget-shuffle');
+  btn.classList.add('spinning');
+  setTimeout(() => btn.classList.remove('spinning'), 300);
+
+  const res  = await fetch('https://api.spotify.com/v1/me/top/tracks?limit=50&time_range=medium_term',
+    { headers: { Authorization: `Bearer ${token}` } });
+  const data = await res.json();
+  if (!data.items?.length) return;
+
+  const current = JSON.parse(localStorage.getItem(SPOTIFY_SONG_KEY) || 'null');
+  let track;
+  do {
+    track = data.items[Math.floor(Math.random() * data.items.length)];
+  } while (data.items.length > 1 && track.id === current?.id);
+
+  const song = {
+    date:   localDateISO(new Date()),
+    name:   track.name,
+    artist: track.artists.map(a => a.name).join(', '),
+    art:    track.album.images[1]?.url || track.album.images[0]?.url || '',
+    url:    track.external_urls.spotify,
+    id:     track.id
+  };
+  localStorage.setItem(SPOTIFY_SONG_KEY, JSON.stringify(song));
+  renderSpotifyWidget(song);
 }
 
 // Handle OAuth callback

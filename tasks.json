@@ -300,6 +300,21 @@
   ],
   "personal": [
     {
+      "id": 1775247783862,
+      "text": "🍿 Traerle comida Divertida a Chispita",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-03",
+      "time": "15:26",
+      "assignees": [
+        "EGE"
+      ],
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T20:23:03.862Z"
+    },
+    {
       "id": 1775203464423,
       "text": "Seguir desarrollando egeManager",
       "done": false,

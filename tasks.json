@@ -262,7 +262,7 @@
       "done": false,
       "priority": "medium",
       "due": "2026-04-03",
-      "time": "11:00",
+      "time": "10:00",
       "assignee": "EGE",
       "tags": [
         "devops"

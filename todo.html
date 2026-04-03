@@ -1046,7 +1046,7 @@ function show(id) { document.getElementById(id).style.display = 'flex'; }
 function hide(id) { document.getElementById(id).style.display = 'none'; }
 
 // ── DATE HELPERS ──────────────────────────────────────────
-function todayISO() { return new Date().toISOString().split('T')[0]; }
+function todayISO() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
 function formatDate(iso) {
   if (!iso) return '';
@@ -1516,12 +1516,18 @@ updateClock();
 setInterval(updateClock, 1000);
 
 // ── AGENDA ────────────────────────────────────────────────
+function localDateISO(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
 function renderAgenda() {
   const el = document.getElementById('agenda-list');
   if (!el) return;
 
-  const todayISO    = new Date().toISOString().slice(0,10);
-  const tomorrowISO = new Date(Date.now() + 86400000).toISOString().slice(0,10);
+  const today    = new Date();
+  const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+  const todayISO    = localDateISO(today);
+  const tomorrowISO = localDateISO(tomorrow);
 
   const all = getAllTasks().filter(t => !t.done && (t.due === todayISO || t.due === tomorrowISO));
 

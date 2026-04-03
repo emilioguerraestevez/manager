@@ -348,12 +348,14 @@
       "done": false,
       "priority": "high",
       "due": "2026-04-03",
-      "time": "11:00",
-      "assignee": "EGE",
+      "time": "14:00",
       "tags": [
         "pago"
       ],
-      "created": "2026-04-03T04:49:27.914Z"
+      "created": "2026-04-03T04:49:27.914Z",
+      "assignees": [
+        "EGE"
+      ]
     },
     {
       "id": 1775190838065,

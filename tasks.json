@@ -82,15 +82,18 @@
     },
     {
       "id": 1775190552636,
-      "text": "Enviar econométricos a Lilian.",
+      "text": "Enviar econométricos a Lilian",
       "done": false,
       "priority": "high",
       "due": "2026-04-06",
-      "assignee": "EGE",
       "tags": [
         "task"
       ],
-      "created": "2026-04-03T04:29:12.636Z"
+      "created": "2026-04-03T04:29:12.636Z",
+      "time": "",
+      "assignees": [
+        "EGE"
+      ]
     },
     {
       "id": 1775190516600,

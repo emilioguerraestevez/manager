@@ -76,7 +76,7 @@
     },
     {
       "id": 1775190478476,
-      "text": "Regularizar operaciones y Sanear proceso administrativo de Amazónica IA.",
+      "text": "Regularizar operaciones y Sanear proceso administrativo de Amazónica IA",
       "done": false,
       "priority": "high",
       "due": "2026-04-09",
@@ -84,7 +84,8 @@
       "tags": [
         "task"
       ],
-      "created": "2026-04-03T04:27:58.476Z"
+      "created": "2026-04-03T04:27:58.476Z",
+      "time": ""
     }
   ],
   "cosmos": [

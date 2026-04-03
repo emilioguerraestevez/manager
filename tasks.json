@@ -68,11 +68,15 @@
       "done": false,
       "priority": "high",
       "due": "2026-04-23",
-      "assignee": "ISRA",
       "tags": [
         "estrategia"
       ],
-      "created": "2026-04-03T04:28:36.600Z"
+      "created": "2026-04-03T04:28:36.600Z",
+      "time": "",
+      "assignees": [
+        "Isra",
+        "Paula"
+      ]
     },
     {
       "id": 1775190478476,

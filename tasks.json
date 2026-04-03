@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1775205961754,
+      "text": "Invitar a comer a Irving Pineda",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-03",
+      "time": "15:45",
+      "assignees": [
+        "EGE"
+      ],
+      "tags": [
+        "reunion"
+      ],
+      "created": "2026-04-03T08:46:01.755Z"
+    },
+    {
       "id": 1775199505000,
       "text": "Preparar presentación del Gabinete de Datos",
       "done": false,

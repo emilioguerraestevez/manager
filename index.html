@@ -1344,6 +1344,13 @@ function show(id) { document.getElementById(id).style.display = 'flex'; }
 function hide(id) { document.getElementById(id).style.display = 'none'; }
 
 // ── DATE HELPERS ──────────────────────────────────────────
+function normalizeAssignee(raw) {
+  const s = raw.trim().replace(/^@+/, '');
+  if (!s) return '';
+  if (s.length <= 3) return s.toUpperCase();
+  return s.replace(/\S+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+}
+
 function todayISO() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
 function formatDate(iso) {
@@ -1367,7 +1374,7 @@ function addTask() {
   const text  = input.value.trim();
   if (!text) { input.focus(); return; }
 
-  const assigneeRaw = document.getElementById('task-assignee').value.trim().replace(/^@+/, '').toUpperCase();
+  const assigneeRaw = normalizeAssignee(document.getElementById('task-assignee').value);
   const tagsRaw     = document.getElementById('task-tags').value.trim();
 
   const tasks = getTasks();
@@ -1770,7 +1777,7 @@ function saveModal() {
   t.priority = document.getElementById('modal-priority').value;
   t.due      = document.getElementById('modal-due').value;
   t.time     = document.getElementById('modal-time').value;
-  t.assignee = document.getElementById('modal-assignee').value.trim().replace(/^@+/, '').toUpperCase();
+  t.assignee = normalizeAssignee(document.getElementById('modal-assignee').value);
   t.tags     = parseTags(document.getElementById('modal-tags').value);
 
   saveTasks(modalTaskProfile, tasks);

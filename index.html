@@ -912,7 +912,7 @@
         <div class="sidebar-title">Noticias</div>
         <div class="news-tabs">
           <button class="news-tab active" onclick="loadNews('bloomberg', this)">Bloomberg</button>
-          <button class="news-tab"        onclick="loadNews('columnas', this)">Editoriales</button>
+          <button class="news-tab"        onclick="loadNews('columnas', this)">Nacionales</button>
         </div>
         <div class="news-list-wrap">
           <div class="news-list" id="news-list">
@@ -1605,7 +1605,7 @@ const RSS_SOURCES = {
     }]
   },
   columnas: {
-    label: 'Editoriales',
+    label: 'Nacionales',
     feeds: [
       { label: 'Reforma',       url: 'https://news.google.com/rss/search?q=columna+site:reforma.com&hl=es-419&gl=MX&ceid=MX:es-419' },
       { label: 'Milenio',       url: 'https://news.google.com/rss/search?q=columna+site:milenio.com&hl=es-419&gl=MX&ceid=MX:es-419' },
@@ -1905,6 +1905,7 @@ renderHomeFilters();
 renderDashboard();
 renderAgenda();
 loadNews('bloomberg', document.querySelector('.news-tab'));
+setInterval(() => loadNews(currentNewsSource, document.querySelector('.news-tab.active')), 60 * 60 * 1000);
 
 // ── SPOTIFY ───────────────────────────────────────────────
 const SPOTIFY_CLIENT_ID    = 'f9bd0341c1354b4bb48d2c6e8924b07e';

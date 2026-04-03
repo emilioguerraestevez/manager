@@ -315,12 +315,14 @@
       "done": false,
       "priority": "low",
       "due": "2026-04-03",
-      "time": "06:00",
-      "assignee": "MM",
+      "time": "",
       "tags": [
         "task"
       ],
-      "created": "2026-04-03T06:59:58.170Z"
+      "created": "2026-04-03T06:59:58.170Z",
+      "assignees": [
+        "MM"
+      ]
     },
     {
       "id": 1775198824659,

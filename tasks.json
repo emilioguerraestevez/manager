@@ -332,7 +332,7 @@
     {
       "id": 1775203464423,
       "text": "Seguir desarrollando egeManager",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-03",
       "time": "10:00",

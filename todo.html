@@ -138,10 +138,54 @@
     border-radius: var(--radius);
     padding: 14px 14px 12px;
     box-shadow: var(--shadow-sm);
-    flex: 1; min-height: 0;
+    flex: 2; min-height: 0;
     display: flex; flex-direction: column;
     overflow: hidden;
   }
+
+  /* ── AGENDA CARD ─────────────────────────────── */
+  .agenda-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 14px 12px;
+    box-shadow: var(--shadow-sm);
+    flex: 1; min-height: 0;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .agenda-day-label {
+    font-size: 9px; font-weight: 700; letter-spacing: .5px;
+    text-transform: uppercase; color: var(--placeholder);
+    margin: 8px 0 5px;
+  }
+  .agenda-day-label:first-child { margin-top: 0; }
+  .agenda-item {
+    display: flex; align-items: flex-start; gap: 7px;
+    padding: 5px 0; border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .agenda-item:last-child { border-bottom: none; }
+  .agenda-time {
+    font-size: 10px; font-weight: 600; color: var(--subtext);
+    min-width: 34px; padding-top: 1px; font-variant-numeric: tabular-nums;
+  }
+  .agenda-icon {
+    width: 14px; height: 14px; border-radius: 3px;
+    object-fit: contain; flex-shrink: 0; margin-top: 1px;
+  }
+  .agenda-text {
+    font-size: 11px; color: var(--text); line-height: 1.35;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .agenda-empty {
+    font-size: 11px; color: var(--placeholder); padding: 6px 0;
+  }
+  .agenda-list { flex: 1; min-height: 0; overflow-y: auto; }
+  .meta-time {
+    font-family: var(--font); font-size: 12px; color: var(--subtext);
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 8px; outline: none;
+    -webkit-appearance: none; appearance: none; cursor: pointer; width: 90px;
+  }
+  .meta-time:focus { border-color: #8e8e93; }
 
   .news-list-wrap {
     flex: 1; min-height: 0; overflow: hidden;
@@ -720,6 +764,14 @@
           </div>
         </div>
       </div>
+
+      <!-- Agenda: Hoy y Mañana -->
+      <div class="agenda-card">
+        <div class="sidebar-title">Agenda</div>
+        <div class="agenda-list" id="agenda-list">
+          <div class="agenda-empty">Sin pendientes próximos</div>
+        </div>
+      </div>
     </aside>
 
     <!-- CENTER: Profiles -->
@@ -851,6 +903,7 @@
             <option value="low">↓ Baja</option>
           </select>
           <input class="meta-date" type="date" id="task-due">
+          <input class="meta-time" type="time" id="task-time">
           <input class="meta-input at-input" type="text" id="task-assignee" placeholder="@ Asignar a…" maxlength="40">
           <input class="meta-input tag-input" type="text" id="task-tags" placeholder="# etiquetas" maxlength="80">
         </div>
@@ -901,6 +954,7 @@
         <div class="modal-row">
           <span class="modal-label">Fecha</span>
           <input class="modal-date-input" type="date" id="modal-due">
+          <input class="meta-time" type="time" id="modal-time" style="margin-left:8px">
         </div>
         <div class="modal-row">
           <span class="modal-label">@ Responsable</span>
@@ -978,6 +1032,7 @@ function goHome() {
   currentProfile = null;
   renderHomeFilters();
   renderDashboard();
+  renderAgenda();
 }
 
 function goGlobalFilter(type, value) {
@@ -1025,6 +1080,7 @@ function addTask() {
     done:     false,
     priority: document.getElementById('task-priority').value,
     due:      document.getElementById('task-due').value,
+    time:     document.getElementById('task-time').value,
     assignee: assigneeRaw,
     tags:     parseTags(tagsRaw),
     created:  new Date().toISOString()
@@ -1389,6 +1445,7 @@ function openModal(id, profileId) {
 
   document.getElementById('modal-priority').value = t.priority || 'medium';
   document.getElementById('modal-due').value       = t.due      || '';
+  document.getElementById('modal-time').value      = t.time     || '';
   document.getElementById('modal-assignee').value  = t.assignee || '';
   document.getElementById('modal-tags').value      = (t.tags||[]).join(' ');
 
@@ -1415,6 +1472,7 @@ function saveModal() {
   t.text     = newText;
   t.priority = document.getElementById('modal-priority').value;
   t.due      = document.getElementById('modal-due').value;
+  t.time     = document.getElementById('modal-time').value;
   t.assignee = document.getElementById('modal-assignee').value.trim().replace(/^@+/, '').toUpperCase();
   t.tags     = parseTags(document.getElementById('modal-tags').value);
 
@@ -1458,9 +1516,59 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
+// ── AGENDA ────────────────────────────────────────────────
+function renderAgenda() {
+  const el = document.getElementById('agenda-list');
+  if (!el) return;
+
+  const todayISO    = new Date().toISOString().slice(0,10);
+  const tomorrowISO = new Date(Date.now() + 86400000).toISOString().slice(0,10);
+
+  const all = getAllTasks().filter(t => !t.done && (t.due === todayISO || t.due === tomorrowISO));
+
+  const byDay = {
+    [todayISO]:    all.filter(t => t.due === todayISO),
+    [tomorrowISO]: all.filter(t => t.due === tomorrowISO)
+  };
+
+  const sortByTime = arr => arr.sort((a,b) => {
+    if (a.time && b.time) return a.time.localeCompare(b.time);
+    if (a.time) return -1;
+    if (b.time) return 1;
+    return 0;
+  });
+
+  let html = '';
+  const labels = { [todayISO]: 'Hoy', [tomorrowISO]: 'Mañana' };
+
+  [todayISO, tomorrowISO].forEach(day => {
+    const items = sortByTime(byDay[day]);
+    if (!items.length) return;
+    html += `<div class="agenda-day-label">${labels[day]}</div>`;
+    items.forEach(t => {
+      const p    = PROFILES[t._profile] || {};
+      const icon = p.icon || p.logo || '';
+      const time = t.time ? `<span class="agenda-time">${t.time}</span>` : `<span class="agenda-time" style="opacity:.3">—</span>`;
+      html += `<div class="agenda-item" onclick="openTaskInProfile('${t._profile}', ${t.id})">
+        ${time}
+        ${icon ? `<img class="agenda-icon" src="${escapeHtml(icon)}" alt="">` : ''}
+        <span class="agenda-text">${escapeHtml(t.text)}</span>
+      </div>`;
+    });
+  });
+
+  el.innerHTML = html || '<div class="agenda-empty">Sin pendientes para hoy ni mañana</div>';
+}
+
+function openTaskInProfile(profileId, taskId) {
+  selectProfile(profileId);
+  setTimeout(() => openModal(taskId), 150);
+}
+
 // ── INIT ──────────────────────────────────────────────────
 renderHomeFilters();
 renderDashboard();
+renderAgenda();
 loadNews('bloomberg', document.querySelector('.news-tab'));
 </script>
 </body>

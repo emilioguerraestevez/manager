@@ -1,6 +1,19 @@
 {
   "coord": [
     {
+      "id": 1775199505000,
+      "text": "Preparar presentación del Gabinete de Datos.",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-04",
+      "time": "15:00",
+      "assignee": "PAULA",
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T06:58:25.000Z"
+    },
+    {
       "id": 1775193827767,
       "text": "Preparar un machote de reporte diario a la JdO y a la SP; y preparar el reporte semanal para ARDV.",
       "done": false,

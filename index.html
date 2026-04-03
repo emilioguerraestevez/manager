@@ -1933,8 +1933,8 @@ async function spotifyExchangeCode(code) {
   const data = await res.json();
   if (data.access_token) {
     localStorage.removeItem('sp_last_error');
-    localStorage.removeItem(SPOTIFY_LISTS_KEY);
-    localStorage.removeItem(SPOTIFY_LISTS_DATE);
+    localStorage.removeItem('sp_liked_total');
+    localStorage.removeItem('sp_liked_date');
     localStorage.setItem(SPOTIFY_TOKEN_KEY,  data.access_token);
     localStorage.setItem(SPOTIFY_EXPIRY_KEY, Date.now() + data.expires_in * 1000);
     if (data.refresh_token) localStorage.setItem(SPOTIFY_REFRESH_KEY, data.refresh_token);
@@ -1972,62 +1972,44 @@ async function getSpotifyToken() {
   return (await spotifyRefresh()) ? localStorage.getItem(SPOTIFY_TOKEN_KEY) : null;
 }
 
-// Fetch & cache all playlists (id + total tracks), refresh once a day
-async function getPlaylists(token) {
+// Get total liked songs count (cached per day)
+async function getLikedTotal(token) {
+  const key = 'sp_liked_total', dateKey = 'sp_liked_date';
   const today = localDateISO(new Date());
-  if (localStorage.getItem(SPOTIFY_LISTS_DATE) === today) {
-    const cached = localStorage.getItem(SPOTIFY_LISTS_KEY);
-    if (cached) return JSON.parse(cached);
+  if (localStorage.getItem(dateKey) === today) {
+    const n = parseInt(localStorage.getItem(key) || '0');
+    if (n > 0) return n;
   }
-  let lists = [], url = 'https://api.spotify.com/v1/me/playlists?limit=50';
-  while (url) {
-    const res  = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
-    const data = await res.json();
-    if (!data.items) {
-      const msg = data.error?.message || JSON.stringify(data.error || data);
-      localStorage.setItem('sp_last_error', 'Playlists: ' + msg);
-      break;
-    }
-    data.items.forEach(p => { if (p?.tracks?.total > 0) lists.push({ id: p.id, total: p.tracks.total }); });
-    url = data.next;
+  const res  = await fetch('https://api.spotify.com/v1/me/tracks?limit=1', { headers: { Authorization: `Bearer ${token}` } });
+  const data = await res.json();
+  if (!data.total) {
+    localStorage.setItem('sp_last_error', 'Liked songs: ' + (data.error?.message || JSON.stringify(data)));
+    return 0;
   }
-  localStorage.setItem(SPOTIFY_LISTS_KEY,  JSON.stringify(lists));
-  localStorage.setItem(SPOTIFY_LISTS_DATE, today);
-  return lists;
+  localStorage.setItem(key, data.total);
+  localStorage.setItem(dateKey, today);
+  return data.total;
 }
 
-// Pick a truly random track across all playlists, avoid recent history
-async function pickRandomTrack(token, retries = 4) {
-  const lists = await getPlaylists(token);
-  if (!lists.length) return null;
+// Pick a random track from Liked Songs, avoid recent history
+async function pickRandomTrack(token, retries = 5) {
+  const total = await getLikedTotal(token);
+  if (!total) return null;
 
   const history = JSON.parse(localStorage.getItem(SPOTIFY_HISTORY_KEY) || '[]');
-  const total   = lists.reduce((s, p) => s + p.total, 0);
 
-  for (let attempt = 0; attempt < retries; attempt++) {
-    // Weighted random playlist selection
-    let rand = Math.floor(Math.random() * total);
-    let playlist;
-    for (const p of lists) { if (rand < p.total) { playlist = p; break; } rand -= p.total; }
-    if (!playlist) playlist = lists[0];
-
-    const offset = Math.floor(Math.random() * playlist.total);
-    const res    = await fetch(
-      `https://api.spotify.com/v1/playlists/${playlist.id}/tracks?limit=1&offset=${offset}&fields=items(track(id,name,artists(name),album(images),external_urls))`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    const data  = await res.json();
-    const track = data.items?.[0]?.track;
-    if (!track?.id) continue; // skip local files
+  for (let i = 0; i < retries; i++) {
+    const offset = Math.floor(Math.random() * total);
+    const res    = await fetch(`https://api.spotify.com/v1/me/tracks?limit=1&offset=${offset}`, { headers: { Authorization: `Bearer ${token}` } });
+    const data   = await res.json();
+    const track  = data.items?.[0]?.track;
+    if (!track?.id) continue;
     if (!history.includes(track.id)) return track;
   }
-  // Fallback: accept any track
-  const offset = Math.floor(Math.random() * lists[0].total);
-  const res    = await fetch(
-    `https://api.spotify.com/v1/playlists/${lists[0].id}/tracks?limit=1&offset=${offset}&fields=items(track(id,name,artists(name),album(images),external_urls))`,
-    { headers: { Authorization: `Bearer ${token}` } }
-  );
-  const data = await res.json();
+  // fallback — accept any
+  const offset = Math.floor(Math.random() * total);
+  const res    = await fetch(`https://api.spotify.com/v1/me/tracks?limit=1&offset=${offset}`, { headers: { Authorization: `Bearer ${token}` } });
+  const data   = await res.json();
   return data.items?.[0]?.track || null;
 }
 

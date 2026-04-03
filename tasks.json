@@ -285,11 +285,14 @@
       "done": false,
       "priority": "high",
       "due": "2026-04-10",
-      "assignee": "EGE",
       "tags": [
-        "gira"
+        "grabación"
       ],
-      "created": "2026-04-03T04:32:12.003Z"
+      "created": "2026-04-03T04:32:12.003Z",
+      "time": "",
+      "assignees": [
+        "EGE"
+      ]
     }
   ],
   "personal": [

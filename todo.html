@@ -1880,8 +1880,8 @@ loadNews('bloomberg', document.querySelector('.news-tab'));
 // ── SPOTIFY ───────────────────────────────────────────────
 const SPOTIFY_CLIENT_ID    = 'f9bd0341c1354b4bb48d2c6e8924b07e';
 const SPOTIFY_REDIRECT     = 'https://emilioguerraestevez.github.io/manager/';
-const SPOTIFY_SCOPE        = 'playlist-read-private playlist-read-collaborative';
-const SPOTIFY_SCOPE_VER    = 'v2'; // bump to force re-auth on scope change
+const SPOTIFY_SCOPE        = 'playlist-read-private playlist-read-collaborative user-library-read';
+const SPOTIFY_SCOPE_VER    = 'v3'; // bumped to force re-auth with new scopes
 const SPOTIFY_TOKEN_KEY    = 'sp_token';
 const SPOTIFY_EXPIRY_KEY   = 'sp_expiry';
 const SPOTIFY_REFRESH_KEY  = 'sp_refresh';
@@ -1911,7 +1911,8 @@ async function spotifyLogin() {
   location.href = `https://accounts.spotify.com/authorize?${new URLSearchParams({
     client_id: SPOTIFY_CLIENT_ID, response_type: 'code',
     redirect_uri: SPOTIFY_REDIRECT, scope: SPOTIFY_SCOPE,
-    code_challenge_method: 'S256', code_challenge: challenge
+    code_challenge_method: 'S256', code_challenge: challenge,
+    show_dialog: 'true'
   })}`;
 }
 

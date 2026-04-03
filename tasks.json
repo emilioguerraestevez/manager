@@ -305,9 +305,13 @@
       "done": false,
       "priority": "high",
       "due": "2026-04-08",
-      "time": "",
-      "assignees": [],
-      "tags": [],
+      "time": "08:00",
+      "assignees": [
+        "EGE"
+      ],
+      "tags": [
+        "pago"
+      ],
       "created": "2026-04-03T20:40:26.156Z"
     },
     {

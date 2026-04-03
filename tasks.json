@@ -1,0 +1,243 @@
+{
+  "coord": [
+    {
+      "id": 1775193827767,
+      "text": "Preparar un machote de reporte diario a la JdO y a la SP; y preparar el reporte semanal para ARDV.",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-06",
+      "time": "17:00",
+      "assignee": "PAULA",
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T05:23:47.767Z"
+    },
+    {
+      "id": 1775190614514,
+      "text": "Remodelar oficina",
+      "done": false,
+      "priority": "low",
+      "due": "2026-04-24",
+      "assignee": "PAULA",
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T04:30:14.514Z"
+    },
+    {
+      "id": 1775190589803,
+      "text": "Construir un consejo interno de Transparencia, que incluya a Víctor Gamboa, IVH, EGE, y Ericks. Hacerlo semanal.",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-08",
+      "assignee": "ISRA",
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-03T04:29:49.803Z"
+    },
+    {
+      "id": 1775190552636,
+      "text": "Enviar econométricos a Lilian.",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-06",
+      "assignee": "EGE",
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T04:29:12.636Z"
+    },
+    {
+      "id": 1775190516600,
+      "text": "Desarrollar un Diagnóstico General de la Administración Pública. A entregar en 3 semanas.",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-23",
+      "assignee": "ISRA",
+      "tags": [
+        "estrategia"
+      ],
+      "created": "2026-04-03T04:28:36.600Z"
+    },
+    {
+      "id": 1775190478476,
+      "text": "Regularizar operaciones y Sanear proceso administrativo de Amazónica IA.",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-09",
+      "assignee": "PAULA",
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T04:27:58.476Z"
+    }
+  ],
+  "cosmos": [
+    {
+      "id": 1775198065571,
+      "text": "Darle seguimiento a tema de Manque",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-06",
+      "time": "",
+      "assignee": "EGE",
+      "tags": [
+        "ventas"
+      ],
+      "created": "2026-04-03T06:34:25.571Z"
+    },
+    {
+      "id": 1775192718318,
+      "text": "Avanzar con Pingüíno y Ana Pau el status de cosmos.ai 2.0",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-10",
+      "time": "",
+      "assignee": "ANA PAU",
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T05:05:18.319Z"
+    },
+    {
+      "id": 1775190859379,
+      "text": "Establecer personal encargado de cuenta de banco.",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-17",
+      "assignee": "EGE",
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T04:34:19.379Z"
+    },
+    {
+      "id": 1775190694421,
+      "text": "Llamar al banco para tarjeta de crédito",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-06",
+      "assignee": "EGE",
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T04:31:34.421Z"
+    },
+    {
+      "id": 1775190674959,
+      "text": "Terminar de desarrollar todos los contratos para todos los empleados.",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-13",
+      "assignee": "ANA PAU",
+      "tags": [
+        "legaltask"
+      ],
+      "created": "2026-04-03T04:31:14.959Z"
+    },
+    {
+      "id": 1775190649492,
+      "text": "Entrega de información y equipo informático.",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-07",
+      "assignee": "ANA PAU",
+      "tags": [
+        "legaltask"
+      ],
+      "created": "2026-04-03T04:30:49.493Z"
+    }
+  ],
+  "smdn": [
+    {
+      "id": 1775190784468,
+      "text": "Hacer un meet con Alondra para escribir el primer guión",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-06",
+      "assignee": "EGE",
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T04:33:04.468Z"
+    },
+    {
+      "id": 1775190757338,
+      "text": "Asistir al piloto a las 13 horas en TVMxq.",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-07",
+      "assignee": "EGE",
+      "tags": [
+        "gira"
+      ],
+      "created": "2026-04-03T04:32:37.338Z"
+    },
+    {
+      "id": 1775190732003,
+      "text": "Asistir al primer episodio: Fake News con Fer Bustos a las 13:00 en TVMxq",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-10",
+      "assignee": "EGE",
+      "tags": [
+        "gira"
+      ],
+      "created": "2026-04-03T04:32:12.003Z"
+    }
+  ],
+  "personal": [
+    {
+      "id": 1775192309246,
+      "text": "Cobrarle a Arturo Torres.",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-08",
+      "time": "",
+      "assignee": "EGE",
+      "tags": [
+        "cpc"
+      ],
+      "created": "2026-04-03T04:58:29.246Z"
+    },
+    {
+      "id": 1775191767914,
+      "text": "Llevarle 10k a RB",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-03",
+      "time": "11:00",
+      "assignee": "EGE",
+      "tags": [
+        "pago"
+      ],
+      "created": "2026-04-03T04:49:27.914Z"
+    },
+    {
+      "id": 1775190838065,
+      "text": "Regularizar cuentas",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-20",
+      "assignee": "EGE",
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-03T04:33:58.065Z"
+    },
+    {
+      "id": 1775190823565,
+      "text": "Pagar la renta.",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-17",
+      "assignee": "EGE",
+      "tags": [
+        "pago"
+      ],
+      "created": "2026-04-03T04:33:43.565Z"
+    }
+  ]
+}

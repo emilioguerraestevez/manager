@@ -1053,7 +1053,7 @@
           </select>
           <input class="meta-date" type="date" id="task-due">
           <input class="meta-time" type="time" id="task-time">
-          <input class="meta-input at-input" type="text" id="task-assignee" placeholder="@ Asignar a…" maxlength="40">
+          <input class="meta-input at-input" type="text" id="task-assignee" placeholder="@ Asignar a… (comas)" maxlength="120">
           <input class="meta-input tag-input" type="text" id="task-tags" placeholder="# etiquetas" maxlength="80">
         </div>
       </div>
@@ -1350,6 +1350,14 @@ function normalizeAssignee(raw) {
   if (s.length <= 3) return s.toUpperCase();
   return s.replace(/\S+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
 }
+function parseAssignees(raw) {
+  return raw.split(',').map(s => normalizeAssignee(s)).filter(Boolean);
+}
+function getAssignees(t) {
+  if (Array.isArray(t.assignees) && t.assignees.length) return t.assignees;
+  if (t.assignee) return [normalizeAssignee(t.assignee)];
+  return [];
+}
 
 function todayISO() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
@@ -1374,7 +1382,7 @@ function addTask() {
   const text  = input.value.trim();
   if (!text) { input.focus(); return; }
 
-  const assigneeRaw = normalizeAssignee(document.getElementById('task-assignee').value);
+  const assigneeRaw = parseAssignees(document.getElementById('task-assignee').value);
   const tagsRaw     = document.getElementById('task-tags').value.trim();
 
   const tasks = getTasks();
@@ -1385,7 +1393,7 @@ function addTask() {
     priority: document.getElementById('task-priority').value,
     due:      document.getElementById('task-due').value,
     time:     document.getElementById('task-time').value,
-    assignee: assigneeRaw,
+    assignees: assigneeRaw,
     tags:     parseTags(tagsRaw),
     created:  new Date().toISOString()
   });
@@ -1465,7 +1473,7 @@ function applyFilter(tasks) {
   else if (currentFilter === 'today')   result = result.filter(t => !t.done && isToday(t.due));
   // chip filter
   if (activeTag)      result = result.filter(t => (t.tags||[]).includes(activeTag));
-  if (activeAssignee) result = result.filter(t => (t.assignee||'').toLowerCase() === activeAssignee.toLowerCase());
+  if (activeAssignee) result = result.filter(t => getAssignees(t).some(a => a.toLowerCase() === activeAssignee.toLowerCase()));
   return result;
 }
 
@@ -1476,9 +1484,9 @@ function taskItemHTML(t, showProfile = false) {
     ? `<span class="task-date${overdueClass}">${isToday(t.due) ? 'Hoy' : formatDate(t.due)}${isOverdue(t.due) && !t.done ? ' · Vencida' : ''}</span>`
     : '';
 
-  const assigneeChip = t.assignee
-    ? `<span class="chip at-chip" onclick="filterByAssignee('${escapeHtml(t.assignee)}')" title="Filtrar por @${escapeHtml(t.assignee)}">@${escapeHtml(t.assignee)}</span>`
-    : '';
+  const assigneeChip = getAssignees(t).map(a =>
+    `<span class="chip at-chip" onclick="filterByAssignee('${escapeHtml(a)}')" title="Filtrar por @${escapeHtml(a)}">@${escapeHtml(a)}</span>`
+  ).join('');
 
   const tagChips = (t.tags||[]).map(tag =>
     `<span class="chip tag-chip" onclick="filterByTag('${escapeHtml(tag)}')" title="Filtrar por #${escapeHtml(tag)}">#${escapeHtml(tag)}</span>`
@@ -1545,7 +1553,7 @@ function renderGlobalFilter(type, value) {
 
   const matched = all.filter(t => {
     if (type === '#') return (t.tags||[]).includes(value.toLowerCase());
-    if (type === '@') return (t.assignee||'').toLowerCase() === value.toLowerCase();
+    if (type === '@') return getAssignees(t).some(a => a.toLowerCase() === value.toLowerCase());
     return false;
   });
 
@@ -1717,12 +1725,11 @@ function renderHomeFilters() {
   // Collect all unique assignees
   const atCount = {};
   all.forEach(t => {
-    if (t.assignee) {
-      const norm = normalizeAssignee(t.assignee);
-      const k = norm.toLowerCase();
-      if (!atCount[k]) atCount[k] = { name: norm, count: 0 };
+    getAssignees(t).forEach(a => {
+      const k = a.toLowerCase();
+      if (!atCount[k]) atCount[k] = { name: a, count: 0 };
       atCount[k].count++;
-    }
+    });
   });
 
   const assigneesEl = document.getElementById('home-assignees');
@@ -1755,7 +1762,7 @@ function openModal(id, profileId) {
   document.getElementById('modal-priority').value = t.priority || 'medium';
   document.getElementById('modal-due').value       = t.due      || '';
   document.getElementById('modal-time').value      = t.time     || '';
-  document.getElementById('modal-assignee').value  = t.assignee || '';
+  document.getElementById('modal-assignee').value  = getAssignees(t).join(', ');
   document.getElementById('modal-tags').value      = (t.tags||[]).join(' ');
 
   document.getElementById('modal-overlay').classList.add('open');
@@ -1782,7 +1789,8 @@ function saveModal() {
   t.priority = document.getElementById('modal-priority').value;
   t.due      = document.getElementById('modal-due').value;
   t.time     = document.getElementById('modal-time').value;
-  t.assignee = normalizeAssignee(document.getElementById('modal-assignee').value);
+  t.assignees = parseAssignees(document.getElementById('modal-assignee').value);
+  delete t.assignee;
   t.tags     = parseTags(document.getElementById('modal-tags').value);
 
   saveTasks(modalTaskProfile, tasks);

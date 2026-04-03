@@ -167,7 +167,7 @@
     },
     {
       "id": 1775190674959,
-      "text": "Terminar de desarrollar todos los contratos para todos los empleados.",
+      "text": "Terminar de desarrollar todos los contratos para todos los empleados",
       "done": false,
       "priority": "high",
       "due": "2026-04-13",
@@ -175,7 +175,8 @@
       "tags": [
         "legaltask"
       ],
-      "created": "2026-04-03T04:31:14.959Z"
+      "created": "2026-04-03T04:31:14.959Z",
+      "time": ""
     },
     {
       "id": 1775190649492,

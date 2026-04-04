@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1775275822472,
+      "text": "Comida con Irving Pineda el Jueves, o viernes",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-10",
+      "time": "17:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "comida"
+      ],
+      "created": "2026-04-04T04:10:22.472Z"
+    },
+    {
       "id": 1775205993506,
       "text": "Reunión 12pm con Victor Gamboa",
       "done": true,

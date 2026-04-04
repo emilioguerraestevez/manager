@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>egeManager</title>
-<link rel="icon" id="favicon" href="Logos_EGE/Logo_EGE.JPG">
-<link rel="apple-touch-icon" id="apple-touch-icon" href="Logos_EGE/Logo_EGE.JPG">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1909,38 +1909,6 @@ renderAgenda();
 loadNews('bloomberg', document.querySelector('.news-tab'));
 setInterval(() => loadNews(currentNewsSource, document.querySelector('.news-tab.active')), 60 * 60 * 1000);
 
-// ── CIRCULAR FAVICON ──────────────────────────────────────
-(function() {
-  const img = new Image();
-  img.onload = function() {
-    const size = 64;
-    const c = document.createElement('canvas');
-    c.width = c.height = size;
-    const ctx = c.getContext('2d');
-    // White fill within circle
-    ctx.beginPath();
-    ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
-    ctx.fillStyle = '#ffffff';
-    ctx.fill();
-    // Clip to circle and draw image
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
-    ctx.clip();
-    ctx.drawImage(img, 0, 0, size, size);
-    ctx.restore();
-    const url = c.toDataURL('image/png');
-    // Remove old favicon links and inject fresh ones (forces browser refresh)
-    document.querySelectorAll('link[rel*="icon"]').forEach(l => l.remove());
-    const fav = document.createElement('link');
-    fav.rel = 'icon'; fav.type = 'image/png'; fav.href = url;
-    document.head.appendChild(fav);
-    const touch = document.createElement('link');
-    touch.rel = 'apple-touch-icon'; touch.href = url;
-    document.head.appendChild(touch);
-  };
-  img.src = 'Logos_EGE/Logo_EGE.JPG';
-})();
 
 // ── SPOTIFY ───────────────────────────────────────────────
 const SPOTIFY_CLIENT_ID    = 'f9bd0341c1354b4bb48d2c6e8924b07e';

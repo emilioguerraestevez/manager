@@ -1913,18 +1913,31 @@ setInterval(() => loadNews(currentNewsSource, document.querySelector('.news-tab.
 (function() {
   const img = new Image();
   img.onload = function() {
-    const size = 64, pad = 6;
+    const size = 64;
     const c = document.createElement('canvas');
     c.width = c.height = size;
     const ctx = c.getContext('2d');
+    // White fill within circle
     ctx.beginPath();
     ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
-    ctx.closePath();
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+    // Clip to circle and draw image
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
     ctx.clip();
-    ctx.drawImage(img, pad, pad, size - pad*2, size - pad*2);
+    ctx.drawImage(img, 0, 0, size, size);
+    ctx.restore();
     const url = c.toDataURL('image/png');
-    document.getElementById('favicon').href = url;
-    document.getElementById('apple-touch-icon').href = url;
+    // Remove old favicon links and inject fresh ones (forces browser refresh)
+    document.querySelectorAll('link[rel*="icon"]').forEach(l => l.remove());
+    const fav = document.createElement('link');
+    fav.rel = 'icon'; fav.type = 'image/png'; fav.href = url;
+    document.head.appendChild(fav);
+    const touch = document.createElement('link');
+    touch.rel = 'apple-touch-icon'; touch.href = url;
+    document.head.appendChild(touch);
   };
   img.src = 'Logos_EGE/Logo_EGE.JPG';
 })();

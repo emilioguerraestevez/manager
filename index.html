@@ -1792,7 +1792,7 @@ function renderDashboard() {
       : '';
     const profileLabel = `<span style="color:var(--placeholder)">${p.name}</span>`;
 
-    return `<div class="dash-item" onclick="selectProfile('${t._profile}')">
+    return `<div class="dash-item" onclick="openTaskInProfile('${t._profile}', ${t.id})">
       <img class="dash-item-icon" src="${p.icon}" alt="${p.name}">
       <div class="dash-item-body">
         <div class="dash-item-text">${escapeHtml(t.text)}</div>

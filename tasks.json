@@ -52,11 +52,14 @@
       "priority": "high",
       "due": "2026-04-04",
       "time": "15:00",
-      "assignee": "Paula",
       "tags": [
         "task"
       ],
-      "created": "2026-04-03T06:58:25.000Z"
+      "created": "2026-04-03T06:58:25.000Z",
+      "assignees": [
+        "Paula"
+      ],
+      "notes": "Coordinar con Paula que haya comunicación entre ella y alguien del equipo de cosmos. Principalmente intentar que sea Eduardo. También mandarle todas las presentaciones previas por correo."
     },
     {
       "id": 1775193827767,

@@ -145,6 +145,21 @@
   ],
   "cosmos": [
     {
+      "id": 1775295474411,
+      "text": "Terminar paper",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-05",
+      "time": "18:37",
+      "assignees": [
+        "EGE"
+      ],
+      "tags": [
+        "research"
+      ],
+      "created": "2026-04-04T09:37:54.411Z"
+    },
+    {
       "id": 1775203341298,
       "text": "Desarrollo AstraMaps y Eureka! 2.0",
       "done": false,

@@ -2010,7 +2010,7 @@ function saveModal() {
 
   saveTasks(modalTaskProfile, tasks);
   if (modalTaskProfile === currentProfile) renderTasks();
-  renderHomeFilters();
+  renderHomeFilters(); renderDashboard(); renderAgenda();
   openModalView();
 }
 
@@ -2020,7 +2020,7 @@ function deleteFromModal() {
   saveTasks(modalTaskProfile, tasks);
   closeModal();
   if (modalTaskProfile === currentProfile) renderTasks();
-  renderHomeFilters();
+  renderHomeFilters(); renderDashboard(); renderAgenda();
 }
 
 // close on Escape
@@ -2098,8 +2098,7 @@ function renderAgenda() {
 }
 
 function openTaskInProfile(profileId, taskId) {
-  selectProfile(profileId);
-  setTimeout(() => openModal(taskId), 150);
+  openModal(taskId, profileId);
 }
 
 // ── INIT ──────────────────────────────────────────────────

@@ -333,6 +333,21 @@
   ],
   "personal": [
     {
+      "id": 1775347661650,
+      "text": "Cenita con mi Haye OAY @ Babero",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-09",
+      "time": "19:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-05T00:07:41.653Z"
+    },
+    {
       "id": 1775248826155,
       "text": "Boletos Mundial RB 2300",
       "done": false,

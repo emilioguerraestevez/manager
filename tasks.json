@@ -337,6 +337,21 @@
   ],
   "personal": [
     {
+      "id": 1775541421838,
+      "text": "Ver el fut casa de Pato",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-08",
+      "time": "20:30",
+      "assignees": [
+        "MM"
+      ],
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-07T05:57:01.838Z"
+    },
+    {
       "id": 1775366700750,
       "text": "IKEA",
       "done": false,

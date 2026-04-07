@@ -354,7 +354,7 @@
     {
       "id": 1775366700750,
       "text": "IKEA",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-05",
       "time": "10:00",

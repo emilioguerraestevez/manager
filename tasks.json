@@ -79,7 +79,7 @@
     {
       "id": 1775199505000,
       "text": "Preparar presentación del Gabinete de Datos",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-04",
       "time": "15:00",

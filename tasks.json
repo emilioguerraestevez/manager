@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1775544548882,
+      "text": "Asistir reunión legal",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-07",
+      "time": "10:10",
+      "assignees": [
+        "Isra"
+      ],
+      "tags": [
+        "reunion"
+      ],
+      "created": "2026-04-07T06:49:08.882Z"
+    },
+    {
       "id": 1775541480603,
       "text": "Dar seguimiento Amazónica AI",
       "done": false,

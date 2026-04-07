@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1775583361351,
+      "text": "Comida David Arellano y Víctor Gamboa",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-09",
+      "time": "14:00",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "comida"
+      ],
+      "created": "2026-04-07T17:36:01.352Z"
+    },
+    {
       "id": 1775544757013,
       "text": "Avances GA USA / Suaanamy p/ARDV",
       "done": false,

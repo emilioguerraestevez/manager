@@ -101,7 +101,7 @@
     {
       "id": 1775190552636,
       "text": "Enviar econométricos a Lilian",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-06",
       "tags": [

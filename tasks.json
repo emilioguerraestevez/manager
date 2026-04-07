@@ -497,12 +497,15 @@
       "done": false,
       "priority": "medium",
       "due": "2026-04-08",
-      "time": "",
-      "assignee": "EGE",
+      "time": "08:43",
       "tags": [
         "cpc"
       ],
-      "created": "2026-04-03T04:58:29.246Z"
+      "created": "2026-04-03T04:58:29.246Z",
+      "assignees": [
+        "EGE"
+      ],
+      "notes": ""
     },
     {
       "id": 1775191767914,

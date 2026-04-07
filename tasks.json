@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1775541480603,
+      "text": "Dar seguimiento Amazónica AI",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-08",
+      "time": "08:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "estrategia"
+      ],
+      "created": "2026-04-07T05:58:00.603Z"
+    },
+    {
       "id": 1775275822472,
       "text": "Comida con Irving Pineda el Jueves, o viernes",
       "done": false,

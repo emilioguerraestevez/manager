@@ -294,15 +294,19 @@
     },
     {
       "id": 1775190649492,
-      "text": "Entrega de información y equipo informático.",
+      "text": "Entrega de información y equipo informático @ cosmos",
       "done": false,
       "priority": "high",
       "due": "2026-04-07",
-      "assignee": "ANA PAU",
       "tags": [
         "legaltask"
       ],
-      "created": "2026-04-03T04:30:49.493Z"
+      "created": "2026-04-03T04:30:49.493Z",
+      "time": "19:00",
+      "assignees": [
+        "Ana Pau"
+      ],
+      "notes": ""
     }
   ],
   "smdn": [

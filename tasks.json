@@ -510,6 +510,21 @@
   ],
   "personal": [
     {
+      "id": 1775638584807,
+      "text": "Prueba",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-08",
+      "time": "20:56",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-08T08:56:24.808Z"
+    },
+    {
       "id": 1775541421838,
       "text": "Ver el fut casa de Pato",
       "done": false,

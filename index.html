@@ -73,10 +73,13 @@
   }
   .home-header-right {
     width: 234px; flex-shrink: 0;
-    display: flex; align-items: stretch;
+    display: flex; align-items: center; gap: 12px;
   }
   .home-header-right .widget-music {
-    flex: 1; padding: 8px 12px 8px 10px;
+    flex: 1; padding: 8px 12px 8px 10px; align-self: stretch;
+  }
+  #emilio-header-clock {
+    flex-shrink: 0; align-items: flex-end;
   }
   .home-header h1 {
     font-size: 22px; font-weight: 600; letter-spacing: -.4px; color: var(--text);
@@ -1485,12 +1488,7 @@
           <button class="btn-notes-portal" onclick="openNotesPortal()">✎ Notas</button>
         </div>
       </div>
-      <div class="home-header-center">
-        <div class="widget-clock-block">
-          <div class="widget-time" id="widget-time">00:00</div>
-          <div class="widget-date" id="widget-date">—</div>
-        </div>
-      </div>
+      <div class="home-header-center"></div>
       <div class="home-header-right">
         <div class="widget-music" id="widget-music" title="Reproducir en Spotify" onclick="spotifyLogin()">
           <div class="widget-music-art" id="widget-art">♪</div>
@@ -1500,6 +1498,10 @@
             <div class="widget-music-artist" id="widget-artist">Toca para vincular</div>
           </div>
           <button class="widget-shuffle" id="widget-shuffle" onclick="event.stopPropagation();shuffleSong()" title="Otra canción" style="display:none">⇄</button>
+        </div>
+        <div class="widget-clock-block" id="emilio-header-clock">
+          <div class="widget-time" id="widget-time">00:00</div>
+          <div class="widget-date" id="widget-date">—</div>
         </div>
         <div class="paula-header-clock" id="paula-header-clock">
           <div class="widget-time" id="widget-time-paula" style="font-size:22px;font-weight:300;letter-spacing:-.5px;color:var(--text);font-variant-numeric:tabular-nums;line-height:1">00:00</div>
@@ -2999,8 +3001,8 @@ function applyUserUI() {
   if (music) music.style.display = isPaula ? 'none' : '';
   const paulaClock = document.getElementById('paula-header-clock');
   if (paulaClock) paulaClock.style.display = isPaula ? 'flex' : 'none';
-  const centerClock = document.querySelector('.home-header-center .widget-clock-block');
-  if (centerClock) centerClock.style.display = isPaula ? 'none' : '';
+  const emilioClock = document.getElementById('emilio-header-clock');
+  if (emilioClock) emilioClock.style.display = isPaula ? 'none' : '';
 
   // Swap subtitle for Paula
   const headerSub = document.querySelector('.home-header-left p');

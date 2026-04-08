@@ -348,6 +348,21 @@
   ],
   "smdn": [
     {
+      "id": 1775633591992,
+      "text": "Asistir al ensayo a las 10am",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-10",
+      "time": "10:00",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "grabación"
+      ],
+      "created": "2026-04-08T07:33:11.993Z"
+    },
+    {
       "id": 1775199566117,
       "text": "Preparar en Claude un documento de referencias",
       "done": false,

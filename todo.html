@@ -1336,16 +1336,6 @@
     .content { padding: 16px 12px 40px; }
   }
 
-  /* Emilio iPhone: show agenda only, hide news + profiles grid */
-  body.user-emilio .home-sidebar        { display: flex; flex-direction: column; width: 100%; height: auto; }
-  body.user-emilio .home-sidebar .sidebar-card { display: none; }   /* hide news */
-  body.user-emilio .home-sidebar .agenda-card  { display: flex; }   /* show agenda */
-  body.user-emilio .profiles-grid       { display: none; }
-  body.user-emilio .home-center         { display: none; }
-
-  /* Paula iPhone: keep sidebar hidden */
-  body.user-paula .home-sidebar { display: none; }
-
   /* ── Extra narrow (iPhone SE ≤ 375px) ────────── */
   @media (max-width: 375px) {
     .home-layout { padding: 10px 10px 20px; }

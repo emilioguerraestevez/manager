@@ -1951,14 +1951,22 @@ async function syncToGitHub() {
 }
 
 async function loadFromGitHub() {
-  const headers = await ghHeaders();
-  if (!headers) return;
   try {
     showSyncBadge('syncing');
-    const res = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, { headers });
-    if (!res.ok) throw new Error('fetch failed');
-    const data  = await res.json();
-    const tasks = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
+    const headers = await ghHeaders();
+    let tasks;
+    if (headers) {
+      // Authenticated: use GitHub API (needed for write access too)
+      const res = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, { headers });
+      if (!res.ok) throw new Error('fetch failed');
+      const data = await res.json();
+      tasks = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
+    } else {
+      // No token (e.g. Paula on her laptop): read from public raw URL
+      const res = await fetch(`https://raw.githubusercontent.com/${SYNC_REPO}/main/${SYNC_FILE}?t=${Date.now()}`);
+      if (!res.ok) throw new Error('fetch failed');
+      tasks = await res.json();
+    }
     Object.keys(PROFILES).forEach(p => {
       if (tasks[p] !== undefined) localStorage.setItem(storageKey(p), JSON.stringify(tasks[p]));
     });
@@ -2012,10 +2020,8 @@ async function manualSync() {
   if (currentProfile) renderTasks();
 }
 
-// Auto-sync from GitHub every 5 minutes
-setInterval(() => {
-  if (localStorage.getItem(SYNC_TOKEN_KEY)) manualSync();
-}, 5 * 60 * 1000);
+// Auto-sync from GitHub every 5 minutes (public raw URL when no token)
+setInterval(manualSync, 5 * 60 * 1000);
 
 function getAllTasks() {
   return Object.keys(PROFILES).flatMap(pid =>
@@ -3370,10 +3376,9 @@ function closeDayPanelOutside(e) {
 
 // ── INIT ──────────────────────────────────────────────────
 (async () => {
-  if (localStorage.getItem(SYNC_TOKEN_KEY)) {
-    await loadFromGitHub();
-    renderHomeFilters(); renderDashboard(); renderAgenda();
-  }
+  // Always load from GitHub (public raw URL used when no token is set)
+  await loadFromGitHub();
+  renderHomeFilters(); renderDashboard(); renderAgenda();
 })();
 applyUserUI();
 renderHomeFilters();

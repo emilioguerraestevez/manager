@@ -33,7 +33,7 @@
     {
       "id": 1775544548882,
       "text": "Asistir reunión legal",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-07",
       "time": "10:10",

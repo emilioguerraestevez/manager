@@ -201,20 +201,15 @@
 
   /* ── PAULA SPLIT LAYOUT ──────────────────────── */
   #paula-center {
-    display: none; flex-direction: row; gap: 14px;
+    display: none; flex-direction: column; gap: 12px;
     flex: 1; min-height: 0; overflow: hidden;
   }
-  /* Left main column: tasks on top, calendar below */
-  .paula-main-col {
-    flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px;
-    min-height: 0; overflow: hidden;
-  }
-  /* @Paula tasks card */
+  /* Top: Mis pendientes (full width) */
   .paula-tasks-box {
+    flex: 0 0 42%; min-height: 0;
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); box-shadow: var(--shadow-sm);
-    display: flex; flex-direction: column; flex-shrink: 0;
-    max-height: 38%; overflow: hidden;
+    display: flex; flex-direction: column; overflow: hidden;
   }
   .paula-tasks-header {
     display: flex; align-items: center; justify-content: space-between;
@@ -228,19 +223,25 @@
     background: #007aff; border-radius: 8px; padding: 1px 7px; min-width: 20px; text-align: center;
   }
   .paula-tasks-list {
-    overflow-y: auto; flex: 1; padding: 6px 10px 8px;
+    overflow-y: auto; flex: 1; padding: 6px 12px 8px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    grid-auto-rows: max-content; align-content: start; gap: 0;
   }
-  .paula-task-group-label {
-    font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
-    color: var(--placeholder); padding: 6px 2px 3px;
+  .paula-task-group-header {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 2px 4px; font-size: 9px; font-weight: 700;
+    letter-spacing: .5px; text-transform: uppercase; color: var(--placeholder);
   }
+  .paula-task-group-header:first-child { padding-top: 4px; }
+  .paula-task-prio-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
   .paula-task-row {
     display: flex; align-items: flex-start; gap: 8px;
-    padding: 6px 4px; border-bottom: 1px solid var(--border); cursor: pointer;
+    padding: 6px 6px; border-bottom: 1px solid var(--border); cursor: pointer;
   }
-  .paula-task-row:last-child { border-bottom: none; }
+  .paula-task-row:last-of-type { border-bottom: none; }
   .paula-task-prio {
-    width: 4px; border-radius: 2px; flex-shrink: 0; margin-top: 3px; align-self: stretch;
+    width: 3px; border-radius: 2px; flex-shrink: 0; margin-top: 3px; align-self: stretch; min-height: 14px;
   }
   .paula-task-body { flex: 1; min-width: 0; }
   .paula-task-text {
@@ -248,17 +249,20 @@
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .paula-task-meta { font-size: 10px; color: var(--placeholder); margin-top: 2px; }
-  .paula-task-date { font-size: 10px; font-weight: 600; flex-shrink: 0; padding-top: 2px; }
-  /* Calendar column */
+  /* Bottom row: calendar + all-tasks */
+  .paula-bottom-row {
+    flex: 1; min-height: 0; display: flex; gap: 12px; overflow: hidden;
+  }
+  /* Calendar */
   .paula-cal-col {
-    flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column;
+    flex: 1; min-width: 0; display: flex; flex-direction: column;
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); box-shadow: var(--shadow-sm);
     overflow: hidden;
   }
-  /* Right all-tasks column */
+  /* All-tasks column */
   .paula-right-col {
-    width: 218px; flex-shrink: 0; display: flex; flex-direction: column;
+    flex: 1; min-width: 0; display: flex; flex-direction: column;
     min-height: 0; overflow: hidden;
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); box-shadow: var(--shadow-sm);
@@ -284,9 +288,7 @@
     display: flex; align-items: center; gap: 5px;
   }
   .paula-all-group-label:first-child { padding-top: 4px; }
-  .paula-all-prio-dot {
-    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
-  }
+  .paula-all-prio-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
   .paula-all-row {
     display: flex; align-items: flex-start; gap: 7px;
     padding: 5px 2px; border-bottom: 1px solid var(--border); cursor: pointer;
@@ -1460,21 +1462,21 @@
       <!-- PAULA CENTER -->
       <div id="paula-center">
 
-        <!-- LEFT MAIN COL: Tasks assigned to Paula (top) + Calendar (bottom) -->
-        <div class="paula-main-col">
-
-          <!-- Top: @Paula tasks -->
-          <div class="paula-tasks-box">
-            <div class="paula-tasks-header">
-              <span class="paula-tasks-label">Mis pendientes</span>
-              <span class="paula-tasks-count" id="paula-my-count">0</span>
-            </div>
-            <div class="paula-tasks-list" id="paula-my-list">
-              <div class="agenda-empty">Sin pendientes asignados</div>
-            </div>
+        <!-- TOP: Mis pendientes (full width) -->
+        <div class="paula-tasks-box">
+          <div class="paula-tasks-header">
+            <span class="paula-tasks-label">Mis pendientes</span>
+            <span class="paula-tasks-count" id="paula-my-count">0</span>
           </div>
+          <div class="paula-tasks-list" id="paula-my-list">
+            <div class="agenda-empty">Sin pendientes asignados</div>
+          </div>
+        </div>
 
-          <!-- Bottom: Calendar -->
+        <!-- BOTTOM ROW: Calendar (left) + All tasks (right) -->
+        <div class="paula-bottom-row">
+
+          <!-- Left: Calendar -->
           <div class="paula-cal-col">
             <div class="cal-header">
               <div class="cal-nav-group">
@@ -1492,17 +1494,17 @@
             <div id="cal-day-panel"></div>
           </div>
 
-        </div>
+          <!-- Right: All tasks by priority -->
+          <div class="paula-right-col">
+            <div class="paula-all-header">
+              <span class="paula-all-label">Todos los pendientes</span>
+              <span class="paula-all-count" id="paula-all-count">0</span>
+            </div>
+            <div class="paula-all-list" id="paula-all-list">
+              <div class="agenda-empty">Sin pendientes</div>
+            </div>
+          </div>
 
-        <!-- RIGHT COL: All tasks by priority -->
-        <div class="paula-right-col">
-          <div class="paula-all-header">
-            <span class="paula-all-label">Todos los pendientes</span>
-            <span class="paula-all-count" id="paula-all-count">0</span>
-          </div>
-          <div class="paula-all-list" id="paula-all-list">
-            <div class="agenda-empty">Sin pendientes</div>
-          </div>
         </div>
 
       </div>
@@ -2968,13 +2970,13 @@ function paulaSortTasks(tasks) {
 
 function renderPaulaMyTasks() {
   const all = getAllTasks().filter(t => !t.done &&
-    t.assignee && t.assignee.toLowerCase().includes('paula'));
+    getAssignees(t).some(a => a.toLowerCase().includes('paula')));
   const sorted = paulaSortTasks(all);
 
   document.getElementById('paula-my-count').textContent = sorted.length;
   const el = document.getElementById('paula-my-list');
   if (!sorted.length) {
-    el.innerHTML = '<div class="agenda-empty">Sin pendientes asignados</div>';
+    el.innerHTML = '<div class="agenda-empty" style="grid-column:1/-1">Sin pendientes asignados</div>';
     return;
   }
 
@@ -2982,24 +2984,24 @@ function renderPaulaMyTasks() {
   const prioLabel = { high: 'Alta', medium: 'Media', low: 'Baja' };
   const todayISO  = calISODate(new Date());
 
-  // Group by priority
   let html = '';
   ['high','medium','low'].forEach(prio => {
     const group = sorted.filter(t => t.priority === prio);
     if (!group.length) return;
-    html += `<div class="paula-task-group-label">${prioLabel[prio]}</div>`;
+    html += `<div class="paula-task-group-header">
+      <span class="paula-task-prio-dot" style="background:${prioColor[prio]}"></span>
+      ${prioLabel[prio]}
+    </div>`;
     group.forEach(t => {
       const p = PROFILES[t._profile] || {};
       const overdue = t.due && t.due < todayISO;
       const dateStr = t.due ? (t.due === todayISO ? 'Hoy' : formatDate(t.due)) : '';
       const dateColor = overdue ? '#ff3b30' : 'var(--subtext)';
-      const icon = p.icon ? `<img class="paula-all-icon" src="${p.icon}" alt="">` : '';
       html += `<div class="paula-task-row" onclick="openTaskInProfile('${t._profile}',${t.id})">
-        <div class="paula-task-prio" style="background:${prioColor[prio]||'#ccc'}"></div>
-        ${icon}
+        <div class="paula-task-prio" style="background:${prioColor[prio]}"></div>
         <div class="paula-task-body">
           <div class="paula-task-text">${escapeHtml(t.text)}</div>
-          <div class="paula-task-meta">${p.name||''}${dateStr ? ' · ' : ''}<span style="color:${dateColor};font-weight:600">${dateStr}</span></div>
+          <div class="paula-task-meta">${p.name||''}${dateStr ? `<span style="color:${dateColor};font-weight:600"> · ${dateStr}</span>` : ''}</div>
         </div>
       </div>`;
     });

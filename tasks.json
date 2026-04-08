@@ -32,7 +32,7 @@
     },
     {
       "id": 1775583361351,
-      "text": "Comida David Arellano y Víctor Gamboa",
+      "text": "Comida David Arellano y Víctor Gamboa en Babero",
       "done": false,
       "priority": "high",
       "due": "2026-04-09",
@@ -43,7 +43,8 @@
       "tags": [
         "comida"
       ],
-      "created": "2026-04-07T17:36:01.352Z"
+      "created": "2026-04-07T17:36:01.352Z",
+      "notes": "Hacer la reservación con Pepe Villegas\n‭55 8564 6357‬"
     },
     {
       "id": 1775544757013,

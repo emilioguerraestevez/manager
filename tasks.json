@@ -179,15 +179,19 @@
     },
     {
       "id": 1775190589803,
-      "text": "Construir un consejo interno de Transparencia, que incluya a Víctor Gamboa, IVH, EGE, y Ericks. Hacerlo semanal.",
+      "text": "Reunión con Víctor Gamboa",
       "done": false,
       "priority": "medium",
       "due": "2026-04-08",
-      "assignee": "ISRA",
       "tags": [
         "reunión"
       ],
-      "created": "2026-04-03T04:29:49.803Z"
+      "created": "2026-04-03T04:29:49.803Z",
+      "time": "10:30",
+      "assignees": [
+        "Isra"
+      ],
+      "notes": "Temas a tratar: \n- Comparecencia\n- Mesa interna de Transparencia\n- Agenda de Gabinete\n- Comida con DA"
     },
     {
       "id": 1775190552636,

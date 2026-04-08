@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1775639358979,
+      "text": "Generar tarjeta de Comparecencia",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-08",
+      "time": "15:09",
+      "assignees": [
+        "Isra"
+      ],
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-08T09:09:18.979Z"
+    },
+    {
       "id": 1775633734960,
       "text": "Reunión con Eva",
       "done": false,

@@ -348,6 +348,21 @@
   ],
   "smdn": [
     {
+      "id": 1775633683357,
+      "text": "Preparar una reunión de seguimiento, ensayo, y apropiación con Alondra",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-10",
+      "time": "14:00",
+      "assignees": [
+        "Alondra"
+      ],
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-08T07:34:43.357Z"
+    },
+    {
       "id": 1775633591992,
       "text": "Asistir al ensayo a las 10am",
       "done": false,

@@ -260,6 +260,21 @@
   ],
   "cosmos": [
     {
+      "id": 1775690180968,
+      "text": "Llamada con Jocelyn",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-08",
+      "time": "19:16",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "call"
+      ],
+      "created": "2026-04-08T23:16:20.969Z"
+    },
+    {
       "id": 1775634479882,
       "text": "Pagar renta oficinas",
       "done": false,

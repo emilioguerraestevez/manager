@@ -1258,27 +1258,88 @@
   /* ── RESPONSIVE — phone / very narrow (≤680px) ──────── */
   @media (max-width: 680px) {
     #profile-screen { overflow-y: auto; height: auto; min-height: 100vh; }
-    .home-layout    { padding: 16px; gap: 12px; height: auto; }
+    .home-layout    { padding: 12px 12px 24px; gap: 10px; height: auto; }
 
-    .home-header         { flex-wrap: wrap; gap: 10px; }
-    .home-header-left    { width: 100%; }
+    /* Header: greeting row only, no center clock, no right widget */
+    .home-header         { flex-wrap: nowrap; gap: 8px; align-items: center; }
+    .home-header-left    { flex: 1; min-width: 0; }
+    .home-header-left p  { display: none; }
     .home-header-center  { display: none; }
-    .home-header-right   { width: 100%; }
-    .home-header-right .widget-music { flex: 1; }
+    .home-header-right   { width: auto; flex-shrink: 0; }
+    .home-header-right .widget-music { min-width: 0; }
+    .paula-header-clock  { display: none !important; }
 
     .home-columns   { flex-direction: column; flex: none; }
-    .home-sidebar   { width: 100%; display: flex; flex-direction: row; gap: 12px; height: 200px; }
-    .home-sidebar > * { flex: 1; }
-    .home-sidebar-right { width: 100%; height: auto; grid-template-rows: none; grid-template-columns: 1fr 1fr; }
+    .home-sidebar   { display: none; }
+    .home-sidebar-right { display: none; }
 
+    /* Emilio: profiles grid stacked */
     .profiles-grid  { grid-template-columns: 1fr; grid-template-rows: repeat(4, auto); flex: none; }
-    .profile-card   { min-height: 120px; flex-direction: row; justify-content: flex-start; padding: 14px; }
-    .profile-logo-wrap { min-height: 60px; width: 60px; flex: none; }
+    .profile-card   { min-height: 0; flex-direction: row; justify-content: flex-start; padding: 12px 14px; }
+    .profile-logo-wrap { min-height: 48px; width: 48px; flex: none; }
     .profile-text   { align-items: flex-start; text-align: left; }
     .profile-desc   { display: none; }
 
-    .topbar { padding: 0 16px; height: 56px; }
-    .content { padding: 20px 16px 40px; }
+    /* ── PAULA MOBILE ──────────────────────────── */
+    #paula-center {
+      display: flex !important;   /* override display:grid */
+      flex-direction: column;
+      gap: 10px;
+      height: auto;
+      overflow: visible;
+    }
+    /* Mis pendientes: top box, capped height */
+    .paula-tasks-box {
+      flex: none;
+      max-height: 44vh;
+    }
+    /* Bottom row: stack calendar above all-tasks */
+    .paula-bottom-row {
+      flex-direction: column;
+      gap: 10px;
+    }
+    /* Calendar: fixed height, always month on mobile */
+    .paula-cal-col {
+      flex: none;
+      height: 330px;
+    }
+    /* Hide week toggle button on mobile */
+    #cal-btn-week { display: none; }
+    /* All-tasks list: capped so it doesn't run forever */
+    .paula-right-col {
+      flex: none;
+      width: auto;
+      max-height: 48vh;
+    }
+    /* Day detail panel: fixed overlay at bottom of screen */
+    #cal-day-panel {
+      position: fixed !important;
+      left: 12px !important;
+      right: 12px !important;
+      width: auto !important;
+      bottom: 20px !important;
+      top: auto !important;
+      max-height: 60vh !important;
+      z-index: 500;
+      border-radius: var(--radius);
+    }
+    /* Mis pendientes grid: single column on mobile */
+    .paula-tasks-list {
+      grid-template-columns: 1fr;
+    }
+
+    .topbar { padding: 0 12px; height: 52px; }
+    .content { padding: 16px 12px 40px; }
+  }
+
+  /* ── Extra narrow (iPhone SE ≤ 375px) ────────── */
+  @media (max-width: 375px) {
+    .home-layout { padding: 10px 10px 20px; }
+    .paula-cal-col { height: 300px; }
+    .cal-month-day { min-height: 46px; padding: 3px 4px; }
+    .cal-month-day-num { font-size: 10px; }
+    .cal-month-icon { width: 12px; height: 12px; }
+    .cal-month-extra { font-size: 8px; }
   }
 </style>
 </head>
@@ -2929,10 +2990,15 @@ function applyUserUI() {
   const centerClock = document.querySelector('.home-header-center .widget-clock-block');
   if (centerClock) centerClock.style.display = isPaula ? 'none' : '';
 
+  // Hide "Selecciona un perfil..." subtitle for Paula
+  const headerSub = document.querySelector('.home-header-left p');
+  if (headerSub) headerSub.style.display = isPaula ? 'none' : '';
+
   if (isPaula) {
     renderPaulaCenter();
     calRefDate = new Date();
-    calSetView('week');
+    // Use month view on narrow screens (iPhone)
+    calSetView(window.innerWidth <= 680 ? 'month' : 'week');
   }
   updateClock();
 }

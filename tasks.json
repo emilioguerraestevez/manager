@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1775633718679,
+      "text": "Reunión con VV",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-08",
+      "time": "11:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-08T07:35:18.680Z"
+    },
+    {
       "id": 1775583361351,
       "text": "Comida David Arellano y Víctor Gamboa",
       "done": false,

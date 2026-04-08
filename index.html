@@ -365,8 +365,13 @@
     padding: 4px 4px 0 0; font-weight: 500;
   }
   .cal-allday-cell {
-    border-left: 1px solid var(--border); padding: 2px 2px;
-    min-height: 24px;
+    border-left: 1px solid var(--border); padding: 2px 3px;
+    min-height: 24px; display: flex; flex-direction: column; gap: 2px;
+  }
+  /* In allday row chips flow normally (not absolute) */
+  .cal-allday-cell .cal-chip {
+    position: static; font-size: 9px; overflow: hidden;
+    white-space: nowrap; text-overflow: ellipsis;
   }
   .cal-time-grid {
     display: grid; grid-template-columns: 36px repeat(7, 1fr);
@@ -422,9 +427,15 @@
     font-size: 11px; font-weight: 600; color: var(--subtext); margin-bottom: 3px;
   }
   .cal-month-day.today .cal-month-day-num { color: #007aff; }
-  .cal-month-icons { display: flex; flex-wrap: wrap; gap: 2px; }
+  .cal-month-icons {
+    display: grid; grid-template-columns: repeat(3, 14px); gap: 2px;
+  }
   .cal-month-icon {
     width: 14px; height: 14px; border-radius: 3px; object-fit: contain;
+  }
+  .cal-month-extra {
+    font-size: 9px; font-weight: 600; color: var(--subtext);
+    line-height: 14px; padding-left: 1px;
   }
 
   /* ── DAY DETAIL PANEL ────────────────────────── */
@@ -3191,19 +3202,20 @@ function renderMonthView() {
     const isToday = iso === todayISO;
     const tasks = all.filter(t => t.due === iso);
 
-    // Profile icons (unique profiles)
-    const profileIds = [...new Set(tasks.map(t => t._profile))];
-    const iconsHtml = profileIds.map(pid => {
-      const p = PROFILES[pid];
-      return p ? `<img class="cal-month-icon" src="${p.icon}" alt="${p.name}" title="${p.name}">` : '';
-    }).join('');
+    // Show up to 5 task icons (3+2 grid), then +n
+    const shown = tasks.slice(0, 5);
+    const extra = tasks.length - 5;
+    const iconsHtml = shown.map(t => {
+      const p = PROFILES[t._profile];
+      return p ? `<img class="cal-month-icon" src="${p.icon}" alt="${p.name}" title="${p.name}: ${escapeHtml(t.text)}">` : '';
+    }).join('') + (extra > 0 ? `<span class="cal-month-extra">+${extra}</span>` : '');
 
     const outsideCls = !inMonth ? ' outside' : '';
     const todayCls   = isToday ? ' today' : '';
     const clickable  = inMonth ? `onclick="openDayPanel('${iso}',event)"` : '';
     gridHtml += `<div class="cal-month-day${outsideCls}${todayCls}" ${clickable}>
       <div class="cal-month-day-num">${cell.getDate()}</div>
-      <div class="cal-month-icons">${iconsHtml}${tasks.length > 3 ? `<span style="font-size:9px;color:var(--subtext);padding-top:1px">+${tasks.length-3}</span>` : ''}</div>
+      <div class="cal-month-icons">${iconsHtml}</div>
     </div>`;
 
     // Don't render more than 6 rows

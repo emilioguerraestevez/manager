@@ -243,6 +243,21 @@
   ],
   "cosmos": [
     {
+      "id": 1775634407650,
+      "text": "Mandarle las bases de datos simuladas a Pingu",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-08",
+      "time": "16:30",
+      "assignees": [
+        "Pingu"
+      ],
+      "tags": [
+        "devops"
+      ],
+      "created": "2026-04-08T07:46:47.650Z"
+    },
+    {
       "id": 1775295474411,
       "text": "Terminar paper",
       "done": false,

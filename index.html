@@ -2990,9 +2990,11 @@ function applyUserUI() {
   const centerClock = document.querySelector('.home-header-center .widget-clock-block');
   if (centerClock) centerClock.style.display = isPaula ? 'none' : '';
 
-  // Hide "Selecciona un perfil..." subtitle for Paula
+  // Swap subtitle for Paula
   const headerSub = document.querySelector('.home-header-left p');
-  if (headerSub) headerSub.style.display = isPaula ? 'none' : '';
+  if (headerSub) headerSub.textContent = isPaula
+    ? 'Bienvenida a tu panel de control.'
+    : 'Selecciona un perfil para continuar';
 
   if (isPaula) {
     renderPaulaCenter();

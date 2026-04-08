@@ -290,15 +290,19 @@
     },
     {
       "id": 1775190859379,
-      "text": "Establecer personal encargado de cuenta de banco.",
+      "text": "Acordar con Yuri planteamiento de responsabilidades bancarias",
       "done": false,
       "priority": "high",
-      "due": "2026-04-17",
-      "assignee": "EGE",
+      "due": "2026-04-08",
       "tags": [
         "task"
       ],
-      "created": "2026-04-03T04:34:19.379Z"
+      "created": "2026-04-03T04:34:19.379Z",
+      "time": "09:00",
+      "assignees": [
+        "EGE"
+      ],
+      "notes": "https://meet.google.com/gor-umjx-pqs"
     },
     {
       "id": 1775190694421,

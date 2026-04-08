@@ -204,15 +204,102 @@
     display: none; flex-direction: row; gap: 14px;
     flex: 1; min-height: 0; overflow: hidden;
   }
+  /* Left main column: tasks on top, calendar below */
+  .paula-main-col {
+    flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px;
+    min-height: 0; overflow: hidden;
+  }
+  /* @Paula tasks card */
+  .paula-tasks-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow-sm);
+    display: flex; flex-direction: column; flex-shrink: 0;
+    max-height: 38%; overflow: hidden;
+  }
+  .paula-tasks-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px 8px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .paula-tasks-label {
+    font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--text);
+  }
+  .paula-tasks-count {
+    font-size: 11px; font-weight: 600; color: #fff;
+    background: #007aff; border-radius: 8px; padding: 1px 7px; min-width: 20px; text-align: center;
+  }
+  .paula-tasks-list {
+    overflow-y: auto; flex: 1; padding: 6px 10px 8px;
+  }
+  .paula-task-group-label {
+    font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+    color: var(--placeholder); padding: 6px 2px 3px;
+  }
+  .paula-task-row {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 6px 4px; border-bottom: 1px solid var(--border); cursor: pointer;
+  }
+  .paula-task-row:last-child { border-bottom: none; }
+  .paula-task-prio {
+    width: 4px; border-radius: 2px; flex-shrink: 0; margin-top: 3px; align-self: stretch;
+  }
+  .paula-task-body { flex: 1; min-width: 0; }
+  .paula-task-text {
+    font-size: 12px; color: var(--text); line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .paula-task-meta { font-size: 10px; color: var(--placeholder); margin-top: 2px; }
+  .paula-task-date { font-size: 10px; font-weight: 600; flex-shrink: 0; padding-top: 2px; }
+  /* Calendar column */
   .paula-cal-col {
-    flex: 1; min-width: 0; display: flex; flex-direction: column;
+    flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column;
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); box-shadow: var(--shadow-sm);
     overflow: hidden;
   }
+  /* Right all-tasks column */
   .paula-right-col {
-    width: 240px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px;
+    width: 218px; flex-shrink: 0; display: flex; flex-direction: column;
     min-height: 0; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  }
+  .paula-all-header {
+    padding: 10px 14px 8px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .paula-all-label {
+    font-size: 12px; font-weight: 700; letter-spacing: .3px; color: var(--text);
+  }
+  .paula-all-count {
+    font-size: 11px; font-weight: 600; color: var(--subtext);
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1px 7px;
+  }
+  .paula-all-list {
+    flex: 1; overflow-y: auto; padding: 6px 10px 8px;
+  }
+  .paula-all-group-label {
+    font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+    color: var(--placeholder); padding: 8px 2px 3px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .paula-all-group-label:first-child { padding-top: 4px; }
+  .paula-all-prio-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+  .paula-all-row {
+    display: flex; align-items: flex-start; gap: 7px;
+    padding: 5px 2px; border-bottom: 1px solid var(--border); cursor: pointer;
+  }
+  .paula-all-row:last-child { border-bottom: none; }
+  .paula-all-icon { width: 14px; height: 14px; border-radius: 3px; object-fit: contain; flex-shrink: 0; margin-top: 1px; }
+  .paula-all-body { flex: 1; min-width: 0; }
+  .paula-all-text { font-size: 11px; color: var(--text); line-height: 1.3; }
+  .paula-all-meta { font-size: 10px; color: var(--placeholder); margin-top: 1px; }
+  /* Paula header clock (top-right, replaces music) */
+  .paula-header-clock {
+    display: none; flex-direction: column; align-items: flex-end; justify-content: center;
+    height: 100%; gap: 1px;
   }
 
   /* ── CALENDAR HEADER ─────────────────────────── */
@@ -1333,6 +1420,10 @@
           </div>
           <button class="widget-shuffle" id="widget-shuffle" onclick="event.stopPropagation();shuffleSong()" title="Otra canción" style="display:none">⇄</button>
         </div>
+        <div class="paula-header-clock" id="paula-header-clock">
+          <div class="widget-time" id="widget-time-paula" style="font-size:22px;font-weight:300;letter-spacing:-.5px;color:var(--text);font-variant-numeric:tabular-nums;line-height:1">00:00</div>
+          <div class="widget-date" id="widget-date-paula" style="font-size:11px;color:var(--subtext);font-weight:400;letter-spacing:.1px">—</div>
+        </div>
       </div>
     </div>
 
@@ -1369,39 +1460,48 @@
       <!-- PAULA CENTER -->
       <div id="paula-center">
 
-        <!-- LEFT: Calendar -->
-        <div class="paula-cal-col">
-          <div class="cal-header">
-            <div class="cal-nav-group">
-              <button class="cal-nav-btn" onclick="calMove(-1)">‹</button>
-              <span class="cal-title" id="cal-title">—</span>
-              <button class="cal-nav-btn" onclick="calMove(1)">›</button>
+        <!-- LEFT MAIN COL: Tasks assigned to Paula (top) + Calendar (bottom) -->
+        <div class="paula-main-col">
+
+          <!-- Top: @Paula tasks -->
+          <div class="paula-tasks-box">
+            <div class="paula-tasks-header">
+              <span class="paula-tasks-label">Mis pendientes</span>
+              <span class="paula-tasks-count" id="paula-my-count">0</span>
             </div>
-            <div class="cal-toggle-group">
-              <button class="cal-toggle-btn active" id="cal-btn-week" onclick="calSetView('week')">Semana</button>
-              <button class="cal-toggle-btn"         id="cal-btn-month" onclick="calSetView('month')">Mes</button>
+            <div class="paula-tasks-list" id="paula-my-list">
+              <div class="agenda-empty">Sin pendientes asignados</div>
             </div>
           </div>
-          <div id="cal-view-week"  class="cal-week-wrap"></div>
-          <div id="cal-view-month" class="cal-month-wrap" style="display:none"></div>
-          <!-- Day detail floating panel -->
-          <div id="cal-day-panel"></div>
+
+          <!-- Bottom: Calendar -->
+          <div class="paula-cal-col">
+            <div class="cal-header">
+              <div class="cal-nav-group">
+                <button class="cal-nav-btn" onclick="calMove(-1)">‹</button>
+                <span class="cal-title" id="cal-title">—</span>
+                <button class="cal-nav-btn" onclick="calMove(1)">›</button>
+              </div>
+              <div class="cal-toggle-group">
+                <button class="cal-toggle-btn active" id="cal-btn-week" onclick="calSetView('week')">Semana</button>
+                <button class="cal-toggle-btn"        id="cal-btn-month" onclick="calSetView('month')">Mes</button>
+              </div>
+            </div>
+            <div id="cal-view-week"  class="cal-week-wrap"></div>
+            <div id="cal-view-month" class="cal-month-wrap" style="display:none"></div>
+            <div id="cal-day-panel"></div>
+          </div>
+
         </div>
 
-        <!-- RIGHT: Alta Prioridad + Agenda -->
+        <!-- RIGHT COL: All tasks by priority -->
         <div class="paula-right-col">
-          <div class="global-section dash-section" style="flex-shrink:0">
-            <div class="dash-header">
-              <span class="global-section-label" style="margin:0">↑ Alta Prioridad</span>
-              <span class="dash-count" id="paula-dash-count">0</span>
-            </div>
-            <div class="dash-list" id="paula-dash-list"><div class="dash-empty">Sin pendientes urgentes</div></div>
+          <div class="paula-all-header">
+            <span class="paula-all-label">Todos los pendientes</span>
+            <span class="paula-all-count" id="paula-all-count">0</span>
           </div>
-          <div class="sidebar-card" style="flex:1;min-height:0;display:flex;flex-direction:column">
-            <div class="sidebar-title">Agenda</div>
-            <div class="agenda-list" id="paula-agenda-list" style="flex:1;overflow-y:auto">
-              <div class="agenda-empty">Sin pendientes próximos</div>
-            </div>
+          <div class="paula-all-list" id="paula-all-list">
+            <div class="agenda-empty">Sin pendientes</div>
           </div>
         </div>
 
@@ -2485,6 +2585,10 @@ function updateClock() {
   const dateStr = `${days[now.getDay()]}, ${now.getDate()} de ${mons[now.getMonth()]} ${now.getFullYear()}`;
   document.getElementById('widget-time').textContent = `${hh}:${m}:${s}`;
   document.getElementById('widget-date').textContent = dateStr;
+  const pt = document.getElementById('widget-time-paula');
+  const pd = document.getElementById('widget-date-paula');
+  if (pt) pt.textContent = `${hh}:${m}:${s}`;
+  if (pd) pd.textContent = dateStr;
   const greeting = h >= 5 && h < 13 ? 'Buenos días'
                  : h >= 13 && h < 19 ? 'Buenas tardes'
                  : 'Buenas noches';
@@ -2799,9 +2903,13 @@ function applyUserUI() {
     if (isPaula) renderPaulaProfileNav();
   }
 
-  // Spotify widget: hide for Paula
+  // Spotify widget: hide for Paula; show Paula's clock in its place
   const music = document.getElementById('widget-music');
   if (music) music.style.display = isPaula ? 'none' : '';
+  const paulaClock = document.getElementById('paula-header-clock');
+  if (paulaClock) paulaClock.style.display = isPaula ? 'flex' : 'none';
+  const centerClock = document.querySelector('.home-header-center .widget-clock-block');
+  if (centerClock) centerClock.style.display = isPaula ? 'none' : '';
 
   if (isPaula) {
     renderPaulaCenter();
@@ -2828,62 +2936,116 @@ function renderPaulaProfileNav() {
 
 function renderPaulaCenter() {
   if (currentUser !== 'paula') return;
+  renderPaulaMyTasks();
+  renderPaulaAllTasks();
+}
 
-  // Alta prioridad
-  const all  = getAllTasks();
-  const high = all.filter(t => t.priority === 'high' && !t.done)
-    .sort((a,b) => {
-      const aO = a.due && isOverdue(a.due) ? 0 : 1;
-      const bO = b.due && isOverdue(b.due) ? 0 : 1;
-      if (aO !== bO) return aO - bO;
-      if (a.due && b.due) return a.due.localeCompare(b.due);
-      if (a.due) return -1; if (b.due) return 1; return 0;
-    });
+/* Sort key: priority rank (high=0, medium=1, low=2) then date proximity */
+function paulaSortKey(t) {
+  const prioRank = { high: 0, medium: 1, low: 2 }[t.priority] ?? 3;
+  const todayISO = calISODate(new Date());
+  let dateRank;
+  if (!t.due) {
+    dateRank = 3; // no date → last
+  } else if (t.due < todayISO) {
+    dateRank = 0; // overdue → first
+  } else {
+    dateRank = 1; // future → sort by date string
+  }
+  return [prioRank, dateRank, t.due || 'zzzz', t.text];
+}
 
-  document.getElementById('paula-dash-count').textContent = high.length;
-  const dashEl = document.getElementById('paula-dash-list');
-  dashEl.innerHTML = high.length ? high.map(t => {
-    const p = PROFILES[t._profile];
-    const overdue  = t.due && isOverdue(t.due);
-    const dateStr  = t.due ? (isToday(t.due) ? 'Hoy' : formatDate(t.due)) : '';
-    const dateCls  = overdue ? 'dash-item-date dash-item-overdue' : 'dash-item-date';
-    const dateLabel = dateStr ? `<span class="${dateCls}">${dateStr}${overdue?' · Vencida':''}</span>` : '';
-    return `<div class="dash-item" onclick="openTaskInProfile('${t._profile}', ${t.id})">
-      <img class="dash-item-icon" src="${p.icon}" alt="${p.name}">
-      <div class="dash-item-body">
-        <div class="dash-item-text">${escapeHtml(t.text)}</div>
-        <div class="dash-item-meta">${dateLabel}${dateStr?'<span>·</span>':''}
-          <span style="color:var(--placeholder)">${p.name}</span></div>
-      </div>
-    </div>`;
-  }).join('') : '<div class="dash-empty">Sin pendientes urgentes</div>';
+function paulaSortTasks(tasks) {
+  return [...tasks].sort((a, b) => {
+    const ka = paulaSortKey(a), kb = paulaSortKey(b);
+    for (let i = 0; i < ka.length; i++) {
+      if (ka[i] < kb[i]) return -1;
+      if (ka[i] > kb[i]) return  1;
+    }
+    return 0;
+  });
+}
 
-  // Agenda (today + tomorrow)
-  const todayISO    = (() => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
-  const tomorrowISO = (() => { const d=new Date(); d.setDate(d.getDate()+1); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
-  const upcoming = all.filter(t => !t.done && (t.due === todayISO || t.due === tomorrowISO))
-    .sort((a,b) => (a.time||'99:99').localeCompare(b.time||'99:99'));
-  const byDay = { [todayISO]: [], [tomorrowISO]: [] };
-  upcoming.forEach(t => { if (byDay[t.due]) byDay[t.due].push(t); });
-  const labels = { [todayISO]: 'Hoy', [tomorrowISO]: 'Mañana' };
-  let agHtml = '';
-  [todayISO, tomorrowISO].forEach(day => {
-    if (!byDay[day].length) return;
-    agHtml += `<div class="agenda-day-label">${labels[day]}</div>`;
-    byDay[day].forEach(t => {
+function renderPaulaMyTasks() {
+  const all = getAllTasks().filter(t => !t.done &&
+    t.assignee && t.assignee.toLowerCase().includes('paula'));
+  const sorted = paulaSortTasks(all);
+
+  document.getElementById('paula-my-count').textContent = sorted.length;
+  const el = document.getElementById('paula-my-list');
+  if (!sorted.length) {
+    el.innerHTML = '<div class="agenda-empty">Sin pendientes asignados</div>';
+    return;
+  }
+
+  const prioColor = { high: '#ff3b30', medium: '#ff9500', low: '#34c759' };
+  const prioLabel = { high: 'Alta', medium: 'Media', low: 'Baja' };
+  const todayISO  = calISODate(new Date());
+
+  // Group by priority
+  let html = '';
+  ['high','medium','low'].forEach(prio => {
+    const group = sorted.filter(t => t.priority === prio);
+    if (!group.length) return;
+    html += `<div class="paula-task-group-label">${prioLabel[prio]}</div>`;
+    group.forEach(t => {
       const p = PROFILES[t._profile] || {};
-      const time = t.time
-        ? `<span class="agenda-time">${t.time}</span>`
-        : `<span class="agenda-time" style="opacity:.45;font-size:9px;font-weight:500">Todo el día</span>`;
-      agHtml += `<div class="agenda-item" onclick="openTaskInProfile('${t._profile}', ${t.id})">
-        ${time}
-        ${p.icon ? `<img class="agenda-icon" src="${escapeHtml(p.icon)}" alt="">` : ''}
-        <span class="agenda-text">${escapeHtml(t.text)}</span>
+      const overdue = t.due && t.due < todayISO;
+      const dateStr = t.due ? (t.due === todayISO ? 'Hoy' : formatDate(t.due)) : '';
+      const dateColor = overdue ? '#ff3b30' : 'var(--subtext)';
+      const icon = p.icon ? `<img class="paula-all-icon" src="${p.icon}" alt="">` : '';
+      html += `<div class="paula-task-row" onclick="openTaskInProfile('${t._profile}',${t.id})">
+        <div class="paula-task-prio" style="background:${prioColor[prio]||'#ccc'}"></div>
+        ${icon}
+        <div class="paula-task-body">
+          <div class="paula-task-text">${escapeHtml(t.text)}</div>
+          <div class="paula-task-meta">${p.name||''}${dateStr ? ' · ' : ''}<span style="color:${dateColor};font-weight:600">${dateStr}</span></div>
+        </div>
       </div>`;
     });
   });
-  document.getElementById('paula-agenda-list').innerHTML =
-    agHtml || '<div class="agenda-empty">Sin pendientes para hoy ni mañana</div>';
+  el.innerHTML = html;
+}
+
+function renderPaulaAllTasks() {
+  const all = getAllTasks().filter(t => !t.done);
+  const sorted = paulaSortTasks(all);
+
+  document.getElementById('paula-all-count').textContent = sorted.length;
+  const el = document.getElementById('paula-all-list');
+  if (!sorted.length) {
+    el.innerHTML = '<div class="agenda-empty">Sin pendientes</div>';
+    return;
+  }
+
+  const prioColor = { high: '#ff3b30', medium: '#ff9500', low: '#34c759' };
+  const prioLabel = { high: 'Alta', medium: 'Media', low: 'Baja' };
+  const todayISO  = calISODate(new Date());
+
+  let html = '';
+  ['high','medium','low'].forEach(prio => {
+    const group = sorted.filter(t => t.priority === prio);
+    if (!group.length) return;
+    html += `<div class="paula-all-group-label">
+      <span class="paula-all-prio-dot" style="background:${prioColor[prio]}"></span>
+      ${prioLabel[prio]}
+    </div>`;
+    group.forEach(t => {
+      const p = PROFILES[t._profile] || {};
+      const overdue = t.due && t.due < todayISO;
+      const dateStr = t.due ? (t.due === todayISO ? 'Hoy' : formatDate(t.due)) : '';
+      const dateColor = overdue ? '#ff3b30' : 'var(--subtext)';
+      const icon = p.icon ? `<img class="paula-all-icon" src="${p.icon}" alt="">` : '';
+      html += `<div class="paula-all-row" onclick="openTaskInProfile('${t._profile}',${t.id})">
+        ${icon}
+        <div class="paula-all-body">
+          <div class="paula-all-text">${escapeHtml(t.text)}</div>
+          <div class="paula-all-meta">${p.name||''}${dateStr ? `<span style="color:${dateColor};font-weight:600"> · ${dateStr}</span>` : ''}</div>
+        </div>
+      </div>`;
+    });
+  });
+  el.innerHTML = html;
 }
 
 // ── PAULA CALENDAR ────────────────────────────────────────

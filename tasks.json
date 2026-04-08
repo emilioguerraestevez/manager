@@ -195,13 +195,16 @@
       "text": "Regularizar operaciones y Sanear proceso administrativo de Amazónica IA",
       "done": false,
       "priority": "high",
-      "due": "2026-04-09",
-      "assignee": "PAULA",
+      "due": "2026-04-08",
       "tags": [
         "task"
       ],
       "created": "2026-04-03T04:27:58.476Z",
-      "time": ""
+      "time": "04:00",
+      "assignees": [
+        "Paula"
+      ],
+      "notes": "Hablar con Enrique Jackson para vernos antes, y planchar con VV"
     }
   ],
   "cosmos": [

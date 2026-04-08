@@ -347,12 +347,15 @@
       "done": false,
       "priority": "medium",
       "due": "2026-04-10",
-      "time": "",
-      "assignee": "ANA PAU",
+      "time": "19:35",
       "tags": [
         "task"
       ],
-      "created": "2026-04-03T05:05:18.319Z"
+      "created": "2026-04-03T05:05:18.319Z",
+      "assignees": [
+        "Ana Pau"
+      ],
+      "notes": ""
     },
     {
       "id": 1775190859379,

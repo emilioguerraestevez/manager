@@ -1193,8 +1193,26 @@
       </div>
     </aside>
 
-    <!-- CENTER: Profiles -->
+    <!-- CENTER: Profiles (Emilio) / Agenda+Priority (Paula) -->
     <div class="home-center">
+
+      <!-- PAULA CENTER -->
+      <div id="paula-center" style="display:none;flex:1;flex-direction:column;gap:16px;min-height:0;overflow:hidden">
+        <div class="global-section dash-section" style="flex-shrink:0">
+          <div class="dash-header">
+            <span class="global-section-label" style="margin:0">↑ Alta Prioridad</span>
+            <span class="dash-count" id="paula-dash-count">0</span>
+          </div>
+          <div class="dash-list" id="paula-dash-list"><div class="dash-empty">Sin pendientes urgentes</div></div>
+        </div>
+        <div class="sidebar-card" style="flex:1;min-height:0;display:flex;flex-direction:column">
+          <div class="sidebar-title">Agenda</div>
+          <div class="agenda-list" id="paula-agenda-list" style="flex:1;overflow-y:auto">
+            <div class="agenda-empty">Sin pendientes próximos</div>
+          </div>
+        </div>
+      </div>
+
       <div class="profiles-grid">
         <div class="profile-card" onclick="selectProfile('coord')">
           <div class="profile-logo-wrap">
@@ -1256,7 +1274,7 @@
         </div>
       </div>
 
-      <div class="sidebar-bottom-stack">
+      <div class="sidebar-bottom-stack" id="emilio-sidebar-bottom">
         <div class="global-section">
           <div class="global-section-label"># Etiquetas</div>
           <div class="global-pills-row" id="home-tags">
@@ -1270,6 +1288,10 @@
           </div>
         </div>
       </div>
+
+      <!-- PAULA: compact profile nav -->
+      <div id="paula-profile-nav" style="display:none;flex-direction:column;gap:10px;overflow-y:auto"></div>
+
     </aside>
 
     </div><!-- .home-columns -->
@@ -1387,7 +1409,7 @@
             <input class="modal-date-input" type="date" id="modal-due">
             <input class="meta-time" type="time" id="modal-time" style="margin-left:8px;background:none;border:none;outline:none">
           </div>
-          <div class="modal-edit-row">
+          <div class="modal-edit-row" id="modal-assignee-row">
             <span class="modal-label">Responsable</span>
             <input class="modal-text-input at-input" type="text" id="modal-assignee" placeholder="@nombre…" maxlength="60">
           </div>
@@ -1432,7 +1454,10 @@
 // ── AUTH ──────────────────────────────────────────────────
 // To change password: run  echo -n "TuNuevaContraseña" | shasum -a 256
 const PWD_HASH = 'd2c614623079d5dc9274ca99c8a04433d398a5e695baa9c80614cfd89548149e';
-const SESSION_KEY = 'ege_auth';
+const SESSION_KEY  = 'ege_auth';
+const USER_KEY     = 'ege_user';
+const PAULA_HASH   = '2a34e660506366772f4c3d8e15b65699b482ac95d05f02ae99dd26db2c73df07';
+let   currentUser  = sessionStorage.getItem(USER_KEY) || 'emilio';
 
 async function sha256(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
@@ -1440,16 +1465,20 @@ async function sha256(str) {
 }
 
 async function doLogin() {
-  const pwd = document.getElementById('login-password').value;
+  const pwd  = document.getElementById('login-password').value;
   const hash = await sha256(pwd);
-  if (hash === PWD_HASH) {
+  if (hash === PWD_HASH || hash === PAULA_HASH) {
+    currentUser = hash === PAULA_HASH ? 'paula' : 'emilio';
     sessionStorage.setItem(SESSION_KEY, '1');
+    sessionStorage.setItem(USER_KEY, currentUser);
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('login-password').value = '';
-    // Re-init Spotify after login (in case OAuth callback happened on login screen)
-    if (typeof loadSpotifySong === 'function') {
-      if (localStorage.getItem(SPOTIFY_TOKEN_KEY)) loadSpotifySong();
-      else renderSpotifyConnect();
+    applyUserUI();
+    if (currentUser === 'emilio') {
+      if (typeof loadSpotifySong === 'function') {
+        if (localStorage.getItem(SPOTIFY_TOKEN_KEY)) loadSpotifySong();
+        else renderSpotifyConnect();
+      }
     }
   } else {
     const err = document.getElementById('login-error');
@@ -1462,6 +1491,7 @@ async function doLogin() {
 
 function doLogout() {
   sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(USER_KEY);
   location.reload();
 }
 
@@ -2260,8 +2290,9 @@ function updateClock() {
   const greeting = h >= 5 && h < 13 ? 'Buenos días'
                  : h >= 13 && h < 19 ? 'Buenas tardes'
                  : 'Buenas noches';
+  const name = currentUser === 'paula' ? 'Paula' : 'Emilio';
   const el = document.getElementById('home-greeting');
-  if (el) el.textContent = `${greeting}, Emilio.`;
+  if (el) el.textContent = `${greeting}, ${name}.`;
 }
 updateClock();
 setInterval(updateClock, 1000);
@@ -2537,6 +2568,122 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeNoteModal(); closeNotesPortal(); }
 });
 
+// ── PAULA UI ──────────────────────────────────────────────
+function applyUserUI() {
+  const isPaula = currentUser === 'paula';
+
+  // Notes: hide entirely for Paula
+  const fab = document.querySelector('.fab-note');
+  if (fab) fab.style.display = isPaula ? 'none' : '';
+  const notesBtn = document.querySelector('.btn-notes-portal');
+  if (notesBtn) notesBtn.style.display = isPaula ? 'none' : '';
+
+  // Assignee input in task add form
+  const taskAssignee = document.getElementById('task-assignee');
+  if (taskAssignee) taskAssignee.style.display = isPaula ? 'none' : '';
+
+  // Assignee row in task modal edit
+  const modalAssigneeRow = document.getElementById('modal-assignee-row');
+  if (modalAssigneeRow) modalAssigneeRow.style.display = isPaula ? 'none' : '';
+
+  // Center: profiles grid vs paula center
+  const profilesGrid = document.querySelector('.profiles-grid');
+  if (profilesGrid) profilesGrid.style.display = isPaula ? 'none' : '';
+  const paulaCenter = document.getElementById('paula-center');
+  if (paulaCenter) paulaCenter.style.display = isPaula ? 'flex' : 'none';
+
+  // Right sidebar bottom: tags/assignees vs profile nav
+  const sidebarBottom = document.getElementById('emilio-sidebar-bottom');
+  if (sidebarBottom) sidebarBottom.style.display = isPaula ? 'none' : '';
+  const paulaNav = document.getElementById('paula-profile-nav');
+  if (paulaNav) {
+    paulaNav.style.display = isPaula ? 'flex' : 'none';
+    if (isPaula) renderPaulaProfileNav();
+  }
+
+  // Spotify widget: hide for Paula
+  const music = document.getElementById('widget-music');
+  if (music) music.style.display = isPaula ? 'none' : '';
+
+  if (isPaula) renderPaulaCenter();
+  updateClock();
+}
+
+function renderPaulaProfileNav() {
+  const nav = document.getElementById('paula-profile-nav');
+  nav.innerHTML = Object.entries(PROFILES).map(([id, p]) =>
+    `<div onclick="selectProfile('${id}')"
+      style="display:flex;align-items:center;gap:10px;padding:11px 13px;
+             background:var(--surface);border:1px solid var(--border);border-radius:13px;
+             cursor:pointer;transition:background .12s"
+      onmouseover="this.style.background='var(--surface2)'"
+      onmouseout="this.style.background='var(--surface)'">
+      <img src="${p.icon}" style="width:32px;height:32px;border-radius:8px;object-fit:cover;flex-shrink:0">
+      <span style="font-size:13px;font-weight:500;color:var(--text);line-height:1.2">${p.name}</span>
+    </div>`
+  ).join('');
+}
+
+function renderPaulaCenter() {
+  if (currentUser !== 'paula') return;
+
+  // Alta prioridad
+  const all  = getAllTasks();
+  const high = all.filter(t => t.priority === 'high' && !t.done)
+    .sort((a,b) => {
+      const aO = a.due && isOverdue(a.due) ? 0 : 1;
+      const bO = b.due && isOverdue(b.due) ? 0 : 1;
+      if (aO !== bO) return aO - bO;
+      if (a.due && b.due) return a.due.localeCompare(b.due);
+      if (a.due) return -1; if (b.due) return 1; return 0;
+    });
+
+  document.getElementById('paula-dash-count').textContent = high.length;
+  const dashEl = document.getElementById('paula-dash-list');
+  dashEl.innerHTML = high.length ? high.map(t => {
+    const p = PROFILES[t._profile];
+    const overdue  = t.due && isOverdue(t.due);
+    const dateStr  = t.due ? (isToday(t.due) ? 'Hoy' : formatDate(t.due)) : '';
+    const dateCls  = overdue ? 'dash-item-date dash-item-overdue' : 'dash-item-date';
+    const dateLabel = dateStr ? `<span class="${dateCls}">${dateStr}${overdue?' · Vencida':''}</span>` : '';
+    return `<div class="dash-item" onclick="openTaskInProfile('${t._profile}', ${t.id})">
+      <img class="dash-item-icon" src="${p.icon}" alt="${p.name}">
+      <div class="dash-item-body">
+        <div class="dash-item-text">${escapeHtml(t.text)}</div>
+        <div class="dash-item-meta">${dateLabel}${dateStr?'<span>·</span>':''}
+          <span style="color:var(--placeholder)">${p.name}</span></div>
+      </div>
+    </div>`;
+  }).join('') : '<div class="dash-empty">Sin pendientes urgentes</div>';
+
+  // Agenda (today + tomorrow)
+  const todayISO    = (() => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
+  const tomorrowISO = (() => { const d=new Date(); d.setDate(d.getDate()+1); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
+  const upcoming = all.filter(t => !t.done && (t.due === todayISO || t.due === tomorrowISO))
+    .sort((a,b) => (a.time||'99:99').localeCompare(b.time||'99:99'));
+  const byDay = { [todayISO]: [], [tomorrowISO]: [] };
+  upcoming.forEach(t => { if (byDay[t.due]) byDay[t.due].push(t); });
+  const labels = { [todayISO]: 'Hoy', [tomorrowISO]: 'Mañana' };
+  let agHtml = '';
+  [todayISO, tomorrowISO].forEach(day => {
+    if (!byDay[day].length) return;
+    agHtml += `<div class="agenda-day-label">${labels[day]}</div>`;
+    byDay[day].forEach(t => {
+      const p = PROFILES[t._profile] || {};
+      const time = t.time
+        ? `<span class="agenda-time">${t.time}</span>`
+        : `<span class="agenda-time" style="opacity:.45;font-size:9px;font-weight:500">Todo el día</span>`;
+      agHtml += `<div class="agenda-item" onclick="openTaskInProfile('${t._profile}', ${t.id})">
+        ${time}
+        ${p.icon ? `<img class="agenda-icon" src="${escapeHtml(p.icon)}" alt="">` : ''}
+        <span class="agenda-text">${escapeHtml(t.text)}</span>
+      </div>`;
+    });
+  });
+  document.getElementById('paula-agenda-list').innerHTML =
+    agHtml || '<div class="agenda-empty">Sin pendientes para hoy ni mañana</div>';
+}
+
 // ── INIT ──────────────────────────────────────────────────
 (async () => {
   if (localStorage.getItem(SYNC_TOKEN_KEY)) {
@@ -2544,6 +2691,7 @@ document.addEventListener('keydown', e => {
     renderHomeFilters(); renderDashboard(); renderAgenda();
   }
 })();
+applyUserUI();
 renderHomeFilters();
 renderDashboard();
 renderAgenda();

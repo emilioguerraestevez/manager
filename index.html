@@ -1263,7 +1263,6 @@
     /* Header: greeting row only, no center clock, no right widget */
     .home-header         { flex-wrap: nowrap; gap: 8px; align-items: center; }
     .home-header-left    { flex: 1; min-width: 0; }
-    .home-header-left p  { display: none; }
     .home-header-center  { display: none; }
     .home-header-right   { width: auto; flex-shrink: 0; }
     .home-header-right .widget-music { min-width: 0; }
@@ -1288,10 +1287,15 @@
       height: auto;
       overflow: visible;
     }
-    /* Mis pendientes: top box, capped height */
+    /* Mis pendientes: top box, capped height, no horizontal scroll */
     .paula-tasks-box {
       flex: none;
       max-height: 44vh;
+      overflow-x: hidden;
+    }
+    .paula-tasks-list {
+      overflow-x: hidden;
+      overflow-y: auto;
     }
     /* Bottom row: stack calendar above all-tasks */
     .paula-bottom-row {

@@ -810,41 +810,55 @@
 
   #note-modal-overlay {
     display: none; position: fixed; inset: 0; z-index: 700;
-    background: rgba(0,0,0,.42); backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    align-items: center; justify-content: center; padding: 20px;
+    background: rgba(0,0,0,.48); backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    align-items: stretch; justify-content: center; padding: 28px;
     animation: fadeIn .15s ease;
   }
   #note-modal-overlay.open { display: flex; }
   #note-modal {
     background: var(--surface); border-radius: 22px;
-    box-shadow: 0 28px 72px rgba(0,0,0,.22);
-    width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto;
-    display: flex; flex-direction: column; position: relative;
+    box-shadow: 0 32px 80px rgba(0,0,0,.25);
+    width: 100%; max-width: 700px; margin: 0 auto;
+    display: flex; flex-direction: column; position: relative; overflow: hidden;
     animation: slideUp .22s cubic-bezier(.34,1.3,.64,1);
   }
   .note-modal-header {
-    padding: 22px 22px 0;
+    padding: 20px 24px 0; flex-shrink: 0;
     display: flex; align-items: center; justify-content: space-between;
   }
-  .note-modal-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; color: var(--placeholder); }
-  .note-modal-body { padding: 14px 22px 8px; display: flex; flex-direction: column; gap: 14px; }
-  .note-textarea {
-    font-family: var(--font); font-size: 17px; font-weight: 500;
+  .note-modal-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--placeholder); }
+  .note-modal-body {
+    padding: 16px 24px 8px; display: flex; flex-direction: column; gap: 14px;
+    flex: 1; overflow-y: auto; min-height: 0;
+  }
+  .note-title-input {
+    font-family: var(--font); font-size: 22px; font-weight: 600;
     color: var(--text); background: none; border: none; outline: none;
-    width: 100%; resize: none; min-height: 100px; max-height: 240px;
-    line-height: 1.5; letter-spacing: -.15px;
-    padding-bottom: 14px; border-bottom: 1.5px solid var(--border);
+    width: 100%; letter-spacing: -.4px; line-height: 1.3;
+    padding-bottom: 10px; border-bottom: 1.5px solid var(--border);
+  }
+  .note-title-input::placeholder { color: var(--placeholder); }
+  .note-textarea {
+    font-family: var(--font); font-size: 15px; font-weight: 400;
+    color: var(--text); background: none; border: none; outline: none;
+    width: 100%; resize: none; min-height: 160px;
+    line-height: 1.7; letter-spacing: -.05px; flex: 1;
   }
   .note-textarea::placeholder { color: var(--placeholder); }
-  .note-ts { font-size: 11px; color: var(--placeholder); }
-  .note-modal-footer { padding: 10px 22px 26px; display: flex; gap: 10px; }
+  .note-ts { font-size: 11px; color: var(--placeholder); flex-shrink: 0; }
+  .note-modal-footer { padding: 12px 24px 24px; display: flex; gap: 10px; flex-shrink: 0; border-top: 1px solid var(--bg); }
   .btn-note-delete {
     font-family: var(--font); font-size: 13px; font-weight: 500;
-    color: var(--placeholder); background: none; border: none; cursor: pointer; padding: 0;
+    color: var(--placeholder); background: none; border: none; cursor: pointer; padding: 8px 0;
     transition: color .15s;
   }
   .btn-note-delete:hover { color: #c0392b; }
+  .btn-note-share {
+    font-family: var(--font); font-size: 13px; font-weight: 500;
+    color: var(--subtext); background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 11px; padding: 10px 16px; cursor: default; opacity: .55;
+  }
   .btn-note-save {
     font-family: var(--font); font-size: 14px; font-weight: 600;
     color: #fff; background: var(--text); border: none;
@@ -852,6 +866,13 @@
     flex: 1; transition: opacity .15s;
   }
   .btn-note-save:hover { opacity: .85; }
+  .btn-view-notes {
+    font-family: var(--font); font-size: 12px; font-weight: 600;
+    color: #6d3fc0; background: #f3ecff; border: none;
+    border-radius: 8px; padding: 5px 12px; cursor: pointer;
+    transition: opacity .15s; margin-top: 4px; align-self: flex-start;
+  }
+  .btn-view-notes:hover { opacity: .8; }
 
   /* ── CLEAR DONE ─────────────────────────────── */
   .btn-clear-done {
@@ -1026,16 +1047,23 @@
       <button class="modal-close" style="position:static" onclick="closeNoteModal()">×</button>
     </div>
     <div class="note-modal-body">
-      <textarea class="note-textarea" id="note-text" placeholder="Escribe tu nota…" oninput="autoGrow(this)"></textarea>
+      <input class="note-title-input" type="text" id="note-title" placeholder="Título de la nota…" maxlength="120">
+      <textarea class="note-textarea" id="note-text" placeholder="Escribe tu nota…"></textarea>
       <div class="modal-edit-card">
         <div class="modal-edit-row">
           <span class="modal-label">Perfil</span>
-          <select class="modal-select" id="note-profile" style="flex:1;background:none;border:none;outline:none;-webkit-appearance:none;appearance:none;font-family:var(--font);font-size:13px;color:var(--text)">
+          <select class="modal-select" id="note-profile" onchange="populateNoteTasks(this.value)">
             <option value="">Sin perfil</option>
             <option value="coord">Coordinación de Asesores</option>
             <option value="cosmos">cosmos.ai</option>
             <option value="smdn">Soy Más de Noche</option>
             <option value="personal">Personal</option>
+          </select>
+        </div>
+        <div class="modal-edit-row">
+          <span class="modal-label">Pendiente</span>
+          <select class="modal-select" id="note-task" disabled>
+            <option value="">Selecciona un perfil primero</option>
           </select>
         </div>
         <div class="modal-edit-row">
@@ -1051,7 +1079,7 @@
         <div class="modal-edit-row" style="align-items:flex-start;padding:13px 15px">
           <span class="modal-label" style="padding-top:2px">Foto</span>
           <div style="flex:1;display:flex;flex-direction:column;gap:8px">
-            <img id="note-photo-preview" style="display:none;width:100%;border-radius:8px;object-fit:cover;max-height:160px" alt="">
+            <img id="note-photo-preview" style="display:none;width:100%;border-radius:8px;object-fit:cover;max-height:200px" alt="">
             <div style="display:flex;gap:10px;align-items:center">
               <label style="font-family:var(--font);font-size:13px;font-weight:500;color:var(--subtext);cursor:pointer">
                 Subir foto
@@ -1066,6 +1094,7 @@
     </div>
     <div class="note-modal-footer">
       <button class="btn-note-delete" id="note-delete-btn" style="display:none" onclick="deleteNote()">Eliminar</button>
+      <button class="btn-note-share" title="Próximamente — requiere Google API">✉ Compartir</button>
       <button class="btn-note-save" onclick="saveNote()">Guardar nota</button>
     </div>
   </div>
@@ -2093,6 +2122,12 @@ function openModalView() {
     html += `<img src="${t.photo}" class="modal-view-photo" alt="Foto adjunta">`;
   }
 
+  // "Ver notas" button if task has linked notes
+  const relatedNotes = loadNotes().filter(n => n.taskId == modalTaskId && n.profile === modalTaskProfile);
+  if (relatedNotes.length) {
+    html += `<button class="btn-view-notes" onclick="viewTaskNotes()">Ver notas (${relatedNotes.length})</button>`;
+  }
+
   document.getElementById('modal-view-content').innerHTML = html;
 }
 
@@ -2323,19 +2358,38 @@ function renderNotesList() {
     return `<div class="note-card" onclick="openEditNote(${n.id})">
       ${n.photo ? `<img class="note-card-thumb" src="${n.photo}" alt="">` : ''}
       <div class="note-card-body">
-        <div class="note-card-text">${escapeHtml(n.text)}</div>
+        ${n.title ? `<div class="note-card-text">${escapeHtml(n.title)}</div>` : `<div class="note-card-text">${escapeHtml(n.text)}</div>`}
         <div class="note-card-meta">${escapeHtml(meta)}</div>
       </div>
     </div>`;
   }).join('');
 }
 
-function openNewNote() {
+function populateNoteTasks(profileId, selectedTaskId) {
+  const sel = document.getElementById('note-task');
+  sel.innerHTML = '<option value="">Sin pendiente</option>';
+  if (!profileId) { sel.disabled = true; sel.options[0].textContent = 'Selecciona un perfil primero'; return; }
+  sel.options[0].textContent = 'Sin pendiente';
+  const tasks = loadTasks(profileId).filter(t => !t.done);
+  tasks.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t.id;
+    opt.textContent = t.text.length > 55 ? t.text.slice(0,55)+'…' : t.text;
+    if (selectedTaskId && t.id == selectedTaskId) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  sel.disabled = false;
+}
+
+function openNewNote(preProfile, preTaskId) {
   editingNoteId = null;
   notePhotoData = null;
   document.getElementById('note-modal-label').textContent = 'Nueva nota';
+  document.getElementById('note-title').value = '';
   document.getElementById('note-text').value = '';
-  document.getElementById('note-profile').value = '';
+  document.getElementById('note-profile').value = preProfile || '';
+  populateNoteTasks(preProfile || '', preTaskId || null);
+  if (preTaskId) document.getElementById('note-task').value = preTaskId;
   document.getElementById('note-assignee').value = '';
   document.getElementById('note-tags').value = '';
   document.getElementById('note-photo-preview').style.display = 'none';
@@ -2345,7 +2399,7 @@ function openNewNote() {
   document.getElementById('note-timestamp').textContent = '';
   document.getElementById('note-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-  setTimeout(() => { const t = document.getElementById('note-text'); autoGrow(t); t.focus(); }, 50);
+  setTimeout(() => document.getElementById('note-title').focus(), 50);
 }
 
 function openEditNote(id) {
@@ -2354,8 +2408,10 @@ function openEditNote(id) {
   editingNoteId = id;
   notePhotoData = note.photo || null;
   document.getElementById('note-modal-label').textContent = 'Nota';
+  document.getElementById('note-title').value = note.title || '';
   document.getElementById('note-text').value = note.text;
   document.getElementById('note-profile').value = note.profile || '';
+  populateNoteTasks(note.profile || '', note.taskId || null);
   document.getElementById('note-assignee').value = (note.assignees||[]).join(', ');
   document.getElementById('note-tags').value = (note.tags||[]).join(' ');
   const preview = document.getElementById('note-photo-preview');
@@ -2366,10 +2422,9 @@ function openEditNote(id) {
   document.getElementById('note-delete-btn').style.display = '';
   const d = new Date(note.updatedAt);
   document.getElementById('note-timestamp').textContent =
-    'Última edición: ' + d.toLocaleDateString('es-MX', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    'Editada ' + d.toLocaleDateString('es-MX', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
   document.getElementById('note-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-  setTimeout(() => autoGrow(document.getElementById('note-text')), 50);
 }
 
 function closeNoteModal() {
@@ -2383,26 +2438,30 @@ function saveNote() {
   if (!text) return;
   const notes = loadNotes();
   const now = Date.now();
+  const taskVal = document.getElementById('note-task').value;
+  const taskId = taskVal ? parseInt(taskVal) : null;
   if (editingNoteId) {
     const n = notes.find(x => x.id === editingNoteId);
     if (n) {
-      n.text = text;
-      n.profile = document.getElementById('note-profile').value || null;
+      n.title    = document.getElementById('note-title').value.trim() || null;
+      n.text     = text;
+      n.profile  = document.getElementById('note-profile').value || null;
+      n.taskId   = taskId;
       n.assignees = parseAssignees(document.getElementById('note-assignee').value);
-      n.tags = parseTags(document.getElementById('note-tags').value);
+      n.tags     = parseTags(document.getElementById('note-tags').value);
       n.updatedAt = now;
       if (notePhotoData) n.photo = notePhotoData; else delete n.photo;
     }
   } else {
     notes.unshift({
-      id: now,
+      id: now, createdAt: now, updatedAt: now,
+      title:    document.getElementById('note-title').value.trim() || null,
       text,
-      profile: document.getElementById('note-profile').value || null,
+      profile:  document.getElementById('note-profile').value || null,
+      taskId,
       assignees: parseAssignees(document.getElementById('note-assignee').value),
-      tags: parseTags(document.getElementById('note-tags').value),
-      photo: notePhotoData || undefined,
-      createdAt: now,
-      updatedAt: now
+      tags:     parseTags(document.getElementById('note-tags').value),
+      photo:    notePhotoData || undefined
     });
   }
   saveNotes(notes);
@@ -2416,6 +2475,28 @@ function deleteNote() {
   saveNotes(notes);
   closeNoteModal();
   if (document.getElementById('notes-overlay').classList.contains('open')) renderNotesList();
+}
+
+function viewTaskNotes() {
+  // Filter notes portal to show only notes linked to current task
+  closeModal();
+  openNotesPortal();
+  // Re-render filtered
+  const notes = loadNotes()
+    .filter(n => n.taskId == modalTaskId && n.profile === modalTaskProfile)
+    .sort((a,b) => b.updatedAt - a.updatedAt);
+  const el = document.getElementById('notes-list');
+  if (!notes.length) { el.innerHTML = '<div class="notes-empty">Sin notas vinculadas.</div>'; return; }
+  el.innerHTML = notes.map(n => {
+    const date = new Date(n.updatedAt).toLocaleDateString('es-MX', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+    return `<div class="note-card" onclick="openEditNote(${n.id})">
+      ${n.photo ? `<img class="note-card-thumb" src="${n.photo}" alt="">` : ''}
+      <div class="note-card-body">
+        ${n.title ? `<div class="note-card-text">${escapeHtml(n.title)}</div>` : `<div class="note-card-text">${escapeHtml(n.text)}</div>`}
+        <div class="note-card-meta">${escapeHtml(date)}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function handleNotePhoto(input) {

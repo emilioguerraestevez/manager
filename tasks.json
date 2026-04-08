@@ -397,15 +397,16 @@
       "text": "Asistir al primer episodio: Fake News con Fer Bustos a las 13:00 en TVMxq",
       "done": false,
       "priority": "high",
-      "due": "2026-04-10",
+      "due": "2026-04-16",
       "tags": [
         "grabación"
       ],
       "created": "2026-04-03T04:32:12.003Z",
-      "time": "",
+      "time": "10:00",
       "assignees": [
         "EGE"
-      ]
+      ],
+      "notes": ""
     }
   ],
   "personal": [

@@ -462,7 +462,7 @@
       "text": "Boletos Mundial RB 2300",
       "done": false,
       "priority": "high",
-      "due": "2026-04-08",
+      "due": "2026-04-15",
       "time": "08:00",
       "assignees": [
         "EGE"
@@ -470,7 +470,8 @@
       "tags": [
         "pago"
       ],
-      "created": "2026-04-03T20:40:26.156Z"
+      "created": "2026-04-03T20:40:26.156Z",
+      "notes": ""
     },
     {
       "id": 1775247783862,

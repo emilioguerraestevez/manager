@@ -18,7 +18,7 @@
     {
       "id": 1775633734960,
       "text": "Reunión con Eva",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-08",
       "time": "14:00",
@@ -33,7 +33,7 @@
     {
       "id": 1775633718679,
       "text": "Reunión con VV",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-08",
       "time": "11:30",

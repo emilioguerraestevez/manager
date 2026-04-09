@@ -447,6 +447,21 @@
   ],
   "smdn": [
     {
+      "id": 1775719163308,
+      "text": "Reunión mañana seguimiento SMDN",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-09",
+      "time": "04:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunion"
+      ],
+      "created": "2026-04-09T07:19:23.308Z"
+    },
+    {
       "id": 1775633683357,
       "text": "Preparar una reunión de seguimiento, ensayo, y apropiación con Alondra",
       "done": false,

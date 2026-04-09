@@ -260,6 +260,21 @@
   ],
   "cosmos": [
     {
+      "id": 1775719331530,
+      "text": "Reunión zoom Pingu y Jocelyn",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-09",
+      "time": "08:30",
+      "assignees": [
+        "Pingus Paula"
+      ],
+      "tags": [
+        "reunion"
+      ],
+      "created": "2026-04-09T07:22:11.530Z"
+    },
+    {
       "id": 1775690180968,
       "text": "Llamada con Jocelyn",
       "done": true,

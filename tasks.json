@@ -10,8 +10,11 @@
       "assignees": [
         "Paula"
       ],
-      "tags": [],
-      "created": "2026-04-09T08:08:49.229Z"
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-09T08:08:49.229Z",
+      "notes": "https://www.cide.edu/wp-content/uploads/2024/09/Aguilar.pdf"
     },
     {
       "id": 1775719753517,

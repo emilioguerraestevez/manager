@@ -262,7 +262,7 @@
     {
       "id": 1775690180968,
       "text": "Llamada con Jocelyn",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-08",
       "time": "19:16",

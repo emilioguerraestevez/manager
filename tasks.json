@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1775719753517,
+      "text": "Reunión territorial con Eva",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-09",
+      "time": "16:00",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-09T07:29:13.517Z"
+    },
+    {
       "id": 1775639358979,
       "text": "Generar tarjeta de Comparecencia",
       "done": true,

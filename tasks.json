@@ -1,6 +1,19 @@
 {
   "coord": [
     {
+      "id": 1775722129229,
+      "text": "Buscar libro de Política Pública del CIDE y S XXI",
+      "done": false,
+      "priority": "low",
+      "due": "2026-04-16",
+      "time": "07:00",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [],
+      "created": "2026-04-09T08:08:49.229Z"
+    },
+    {
       "id": 1775719753517,
       "text": "Reunión territorial con Eva",
       "done": false,

@@ -197,7 +197,7 @@
     {
       "id": 1775190589803,
       "text": "Reunión con Víctor Gamboa",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-08",
       "tags": [

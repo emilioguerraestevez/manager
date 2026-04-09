@@ -452,14 +452,15 @@
       "done": false,
       "priority": "high",
       "due": "2026-04-09",
-      "time": "04:30",
+      "time": "16:30",
       "assignees": [
         "Paula"
       ],
       "tags": [
         "reunion"
       ],
-      "created": "2026-04-09T07:19:23.308Z"
+      "created": "2026-04-09T07:19:23.308Z",
+      "notes": ""
     },
     {
       "id": 1775633683357,

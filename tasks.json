@@ -141,7 +141,7 @@
     {
       "id": 1775275822472,
       "text": "Comida con Irving Pineda el Jueves, o viernes",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-10",
       "time": "17:30",

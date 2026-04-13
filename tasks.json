@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1776100860354,
+      "text": "Reunión con Juan Javier Pitts Amazónica IA",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-14",
+      "time": "13:00",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reuniòn"
+      ],
+      "created": "2026-04-13T17:21:00.354Z"
+    },
+    {
       "id": 1776089984991,
       "text": "Gabinete Ampliado",
       "done": false,

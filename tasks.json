@@ -515,7 +515,7 @@
     {
       "id": 1775633683357,
       "text": "Preparar una reunión de seguimiento, ensayo, y apropiación con Alondra",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-10",
       "time": "14:00",

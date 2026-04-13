@@ -2,7 +2,7 @@
   "coord": [
     {
       "id": 1776100596883,
-      "text": "Reunión con Sergio Pitts",
+      "text": "Reunión con Sergio Pitts Amazónica IA",
       "done": false,
       "priority": "medium",
       "due": "2026-04-14",
@@ -13,7 +13,8 @@
       "tags": [
         "reunión"
       ],
-      "created": "2026-04-13T17:16:36.884Z"
+      "created": "2026-04-13T17:16:36.884Z",
+      "notes": ""
     },
     {
       "id": 1776089984991,

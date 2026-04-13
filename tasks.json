@@ -530,13 +530,16 @@
       "text": "Terminar de desarrollar todos los contratos para todos los empleados",
       "done": false,
       "priority": "high",
-      "due": "2026-04-13",
-      "assignee": "ANA PAU",
+      "due": "2026-04-15",
       "tags": [
         "legaltask"
       ],
       "created": "2026-04-03T04:31:14.959Z",
-      "time": ""
+      "time": "",
+      "assignees": [
+        "Ana Pau"
+      ],
+      "notes": ""
     },
     {
       "id": 1775190649492,

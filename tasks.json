@@ -79,7 +79,7 @@
     {
       "id": 1775583361351,
       "text": "Comida David Arellano y Víctor Gamboa en Babero",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-09",
       "time": "14:00",

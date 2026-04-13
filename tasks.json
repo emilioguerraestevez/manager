@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1776089950941,
+      "text": "Gabinete Estratégico",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-13",
+      "time": "08:00",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunion"
+      ],
+      "created": "2026-04-13T14:19:10.942Z"
+    },
+    {
       "id": 1775722129229,
       "text": "Buscar libro de Política Pública del CIDE y S XXI",
       "done": false,

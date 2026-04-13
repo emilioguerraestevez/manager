@@ -336,6 +336,21 @@
   ],
   "cosmos": [
     {
+      "id": 1776090049336,
+      "text": "Entrega-Recepción cosmos",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-13",
+      "time": "15:00",
+      "assignees": [
+        "Nancy"
+      ],
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-13T14:20:49.336Z"
+    },
+    {
       "id": 1775719388769,
       "text": "Reunión con Pingu y Jocelyn",
       "done": true,

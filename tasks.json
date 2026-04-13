@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1776089984991,
+      "text": "Gabinete Ampliado",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-13",
+      "time": "12:00",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunion"
+      ],
+      "created": "2026-04-13T14:19:44.991Z"
+    },
+    {
       "id": 1776089964562,
       "text": "Gabinete de Datos",
       "done": false,

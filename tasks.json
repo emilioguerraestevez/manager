@@ -21,14 +21,15 @@
       "done": false,
       "priority": "high",
       "due": "2026-04-14",
-      "time": "13:00",
+      "time": "11:00",
       "assignees": [
         "Paula"
       ],
       "tags": [
         "reuniòn"
       ],
-      "created": "2026-04-13T17:21:00.354Z"
+      "created": "2026-04-13T17:21:00.354Z",
+      "notes": ""
     },
     {
       "id": 1776089984991,

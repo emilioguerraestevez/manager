@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1776142119132,
+      "text": "Mesa Legal",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-14",
+      "time": "09:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-14T04:48:39.133Z"
+    },
+    {
       "id": 1776100860354,
       "text": "Reunión con Juan Javier Pitts Amazónica IA",
       "done": false,

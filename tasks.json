@@ -399,6 +399,21 @@
   ],
   "cosmos": [
     {
+      "id": 1776142475923,
+      "text": "Reunión con Pingüíno @ Hamburgo 18:30",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-14",
+      "time": "18:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-14T04:54:35.924Z"
+    },
+    {
       "id": 1776090049336,
       "text": "Entrega-Recepción cosmos",
       "done": false,

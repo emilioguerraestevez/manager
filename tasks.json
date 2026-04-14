@@ -701,6 +701,21 @@
   ],
   "personal": [
     {
+      "id": 1776142304636,
+      "text": "Javier Olzer @ Café la Habana",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-14",
+      "time": "12:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-14T04:51:44.636Z"
+    },
+    {
       "id": 1775541421838,
       "text": "Ver el fut casa de Pato",
       "done": false,

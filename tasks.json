@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1776142364631,
+      "text": "Comida FIAMMA - AMR @ Reforma 390",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-13",
+      "time": "12:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-14T04:52:44.631Z"
+    },
+    {
       "id": 1776142119132,
       "text": "Mesa Legal",
       "done": false,

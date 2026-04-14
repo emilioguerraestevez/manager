@@ -1938,6 +1938,7 @@ async function syncToGitHub() {
     showSyncBadge('syncing');
     const all = {};
     Object.keys(PROFILES).forEach(p => { all[p] = loadTasks(p); });
+    all._notes = loadNotes(); // include notes in sync
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(all, null, 2))));
     const getRes  = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, { headers });
     const getData = getRes.ok ? await getRes.json() : {};
@@ -1954,22 +1955,50 @@ async function loadFromGitHub() {
   try {
     showSyncBadge('syncing');
     const headers = await ghHeaders();
-    let tasks;
+    let remote;
     if (headers) {
-      // Authenticated: use GitHub API (needed for write access too)
       const res = await fetch(`https://api.github.com/repos/${SYNC_REPO}/contents/${SYNC_FILE}`, { headers });
       if (!res.ok) throw new Error('fetch failed');
       const data = await res.json();
-      tasks = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
+      remote = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))));
     } else {
-      // No token (e.g. Paula on her laptop): read from public raw URL
+      // No token: read from public raw URL
       const res = await fetch(`https://raw.githubusercontent.com/${SYNC_REPO}/main/${SYNC_FILE}?t=${Date.now()}`);
       if (!res.ok) throw new Error('fetch failed');
-      tasks = await res.json();
+      remote = await res.json();
     }
+
+    // Merge tasks: keep any local tasks not yet in GitHub (e.g. Paula's additions)
+    let needsWrite = false;
     Object.keys(PROFILES).forEach(p => {
-      if (tasks[p] !== undefined) localStorage.setItem(storageKey(p), JSON.stringify(tasks[p]));
+      if (remote[p] === undefined) return;
+      const local    = loadTasks(p);
+      const remoteIds = new Set(remote[p].map(t => t.id));
+      const localOnly = local.filter(t => !remoteIds.has(t.id));
+      if (localOnly.length) needsWrite = true;
+      localStorage.setItem(storageKey(p), JSON.stringify([...remote[p], ...localOnly]));
     });
+
+    // Merge notes: union by id, keep the newer updatedAt for conflicts
+    if (remote._notes !== undefined) {
+      const localNotes  = loadNotes();
+      const remoteMap   = new Map(remote._notes.map(n => [n.id, n]));
+      const localMap    = new Map(localNotes.map(n => [n.id, n]));
+      const allIds      = new Set([...remoteMap.keys(), ...localMap.keys()]);
+      const merged      = [];
+      allIds.forEach(id => {
+        const r = remoteMap.get(id), l = localMap.get(id);
+        if (r && l) merged.push((l.updatedAt||0) > (r.updatedAt||0) ? l : r);
+        else merged.push(r || l);
+      });
+      const localOnly = localNotes.filter(n => !remoteMap.has(n.id));
+      if (localOnly.length) needsWrite = true;
+      saveNotes(merged);
+    }
+
+    // If local had new items and we can write, push merged state back
+    if (needsWrite && headers) scheduleSyncToGitHub();
+
     showSyncBadge('ok');
   } catch { showSyncBadge('error'); }
 }

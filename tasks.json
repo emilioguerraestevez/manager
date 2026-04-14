@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1776142429009,
+      "text": "Concejal Luis Figueroa @ Café en Reforma o cerca de Hamburgo",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-14",
+      "time": "17:00",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-14T04:53:49.009Z"
+    },
+    {
       "id": 1776142364631,
       "text": "Comida FIAMMA - AMR @ Reforma 390",
       "done": false,

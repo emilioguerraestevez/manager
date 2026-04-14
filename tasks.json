@@ -747,6 +747,21 @@
   ],
   "personal": [
     {
+      "id": 1776142507587,
+      "text": "Cumple Lively @ Ling Ling",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-14",
+      "time": "19:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunión"
+      ],
+      "created": "2026-04-14T04:55:07.587Z"
+    },
+    {
       "id": 1776142304636,
       "text": "Javier Olzer @ Café la Habana",
       "done": false,

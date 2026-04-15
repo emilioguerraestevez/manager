@@ -399,6 +399,21 @@
   ],
   "cosmos": [
     {
+      "id": 1776287022001,
+      "text": "Senado @ AI Commision",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-15",
+      "time": "17:00",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "reunion"
+      ],
+      "created": "2026-04-15T21:03:42.001Z"
+    },
+    {
       "id": 1776142475923,
       "text": "Reunión con Pingüíno @ Hamburgo 18:30",
       "done": false,

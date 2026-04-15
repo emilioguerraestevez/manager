@@ -968,5 +968,72 @@
       "created": "2026-04-08T20:09:55.719Z"
     }
   ],
-  "_notes": []
+  "_notes": [
+    {
+      "id": 1776186925164,
+      "createdAt": 1776186925164,
+      "updatedAt": 1776186925164,
+      "title": "Mesa Legal",
+      "text": "Auditorías\nComparecencia: Puntos de acuerdo contestados. \nReferir cuáles son \nPreparar la lista de los más importantes: \n- Tótems\n- Asfalto\n- Madrid\n\nSolicitudes de Transparencia\nPuntos de Acuerdo\nEn lo particular: Leonor Otegui\n\nInforme ejecutivo que pide el congreso son 15 temas. \n\nConvenios? Solicitud de Transparencia\n\n___________________________________________________\n\nReunión con Amazónica IA y atender lo técnico.",
+      "profile": "coord",
+      "taskId": 1776142119132,
+      "assignees": [],
+      "tags": []
+    },
+    {
+      "id": 1776110293762,
+      "createdAt": 1776110293762,
+      "updatedAt": 1776123873944,
+      "title": "Gabinete Estratégico 2",
+      "text": "En atención a lo comentado de las acepciones para determinar las candidaturas\n\n- Public Policy Focus mientras se hace política por dentro y por fuera\n(desagregar técnicamente cada una de las líneas de gobierno)\n(BRILLA CUAUHTÉMOC!!)\n\n- Entender lo positivo que ha sido no ser reactivo\n\n- Entender la arquitectura de nuestras estructuras\n- Preparar la comparecencia en ese sentido, de aquí a esa comparecencia. \n\n-Qualys de campaña (PV)\n\n_______________\n\n*Prioridades ARDV*\n-3 mayo elección PPs (Eva-EGE)\nEVA: Arquitectura de las Estructuras\n\n- Credencialización de la Alcaldía: Pasaporte Cuauhtémoc MUNDIAL\n- Impulsar perfiles: Revisar quién tiene credencial\n- Amazónica IA: Pruebas HOY MISMO\n- Legal Crisis Management: control de crisis y comunicaciones\n- Coordinación gestión de ataque de Transparencia\n- Bodoque de información de Comparecencia (acordar todo con Érika)",
+      "profile": "coord",
+      "taskId": 1776089950941,
+      "assignees": [
+        "Paula",
+        "Isra"
+      ],
+      "tags": [
+        "estrategia"
+      ]
+    },
+    {
+      "id": 1775686322808,
+      "createdAt": 1775686322808,
+      "updatedAt": 1775719425157,
+      "title": "Reunión Transparencia",
+      "text": "Avances de 100 solicitudes: ir por la vía de prórroga, y de las reservas propias de la auditoría y\nSolicitud Manuel: La administración no tiene información al respecto de asuntos personales.",
+      "profile": "coord",
+      "taskId": null,
+      "assignees": [
+        "Paula"
+      ],
+      "tags": []
+    },
+    {
+      "id": 1775682929835,
+      "createdAt": 1775682929835,
+      "updatedAt": 1775682929835,
+      "title": "Presentación con Eva Guerrero",
+      "text": "Sistema: \nMapeo, para RS y P, y C. \n\nMensaje central",
+      "profile": null,
+      "taskId": null,
+      "assignees": [],
+      "tags": []
+    },
+    {
+      "id": 1775635325735,
+      "createdAt": 1775635325735,
+      "updatedAt": 1775635339383,
+      "title": "Reunión con Yuri sobre Responsabilidades Bancarias",
+      "text": "-Hasta dónde llevaremos la posibilidad de entregarle cuentas? Dineros? Costos?",
+      "profile": "cosmos",
+      "taskId": 1775190859379,
+      "assignees": [
+        "Yuri"
+      ],
+      "tags": [
+        "estrategia"
+      ]
+    }
+  ]
 }

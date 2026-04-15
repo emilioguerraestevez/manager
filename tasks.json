@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1776287109063,
+      "text": "Amazónica IA DevOps: Stress Test",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-15",
+      "time": "10:00",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-15T21:05:09.063Z"
+    },
+    {
       "id": 1776142429009,
       "text": "Concejal Luis Figueroa @ Café en Reforma o cerca de Hamburgo",
       "done": false,

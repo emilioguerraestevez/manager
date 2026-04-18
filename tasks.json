@@ -431,7 +431,7 @@
     {
       "id": 1776287022001,
       "text": "Senado @ AI Commision",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-15",
       "time": "17:00",

@@ -667,7 +667,7 @@
     {
       "id": 1775190649492,
       "text": "Entrega de información y equipo informático @ cosmos",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-09",
       "tags": [

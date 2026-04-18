@@ -414,6 +414,21 @@
   ],
   "cosmos": [
     {
+      "id": 1776483874785,
+      "text": "Workshop astra con Pingu",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-17",
+      "time": "21:00",
+      "assignees": [
+        "Pingu"
+      ],
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-18T03:44:34.785Z"
+    },
+    {
       "id": 1776287022001,
       "text": "Senado @ AI Commision",
       "done": false,

@@ -1050,6 +1050,21 @@
       "tags": [
         "estrategia"
       ]
+    },
+    {
+      "id": 1776492595751,
+      "createdAt": 1776492595751,
+      "updatedAt": 1776492595751,
+      "title": "Primer workshop con Pingu",
+      "text": "Astra:  (TAREAS)\n1. Catálogo de correspondencia institucional\n2. Categorías estándar. PARA CADA DIRECCIÓN. \n3. Revisar ponderación entre áreas\n4. Retrieve secciones\n5. Pencil full ai\n6. Linear: devops software",
+      "profile": "cosmos",
+      "taskId": 1776483874785,
+      "assignees": [
+        "Pingu"
+      ],
+      "tags": [
+        "devops"
+      ]
     }
   ]
 }

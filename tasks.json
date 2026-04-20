@@ -414,6 +414,21 @@
   ],
   "cosmos": [
     {
+      "id": 1776718048485,
+      "text": "Regularización Administrativa: Yuri",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-21",
+      "time": "13:00",
+      "assignees": [
+        "Yuri"
+      ],
+      "tags": [
+        "task"
+      ],
+      "created": "2026-04-20T20:47:28.485Z"
+    },
+    {
       "id": 1776483874785,
       "text": "Workshop astra con Pingu",
       "done": false,

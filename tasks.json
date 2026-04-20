@@ -1094,6 +1094,17 @@
       "tags": [
         "devops"
       ]
+    },
+    {
+      "id": 1776707708343,
+      "createdAt": 1776707708343,
+      "updatedAt": 1776707708343,
+      "title": "Gabinete Estratégico 3",
+      "text": "- La Resistencia",
+      "profile": "coord",
+      "taskId": 1776089950941,
+      "assignees": [],
+      "tags": []
     }
   ]
 }

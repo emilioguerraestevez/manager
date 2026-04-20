@@ -982,6 +982,35 @@
         "reunion"
       ],
       "created": "2026-04-08T20:09:55.719Z"
+    },
+    {
+      "id": 1775347661650,
+      "text": "Cenita con mi Haye OAY @ Babero",
+      "done": false,
+      "priority": "medium",
+      "due": "2026-04-16",
+      "time": "19:30",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "comida"
+      ],
+      "created": "2026-04-05T00:07:41.653Z",
+      "notes": "URGENTE! Avisar a Paula del cambio de fecha.\nHacer la reservación con Pepe Villegas \n‭55 8564 6357‬"
+    },
+    {
+      "id": 1775198824659,
+      "text": "Transferir 30k a Mel",
+      "done": false,
+      "priority": "high",
+      "due": "2026-04-16",
+      "time": "",
+      "assignee": "EGE",
+      "tags": [
+        "pago"
+      ],
+      "created": "2026-04-03T06:47:04.660Z"
     }
   ],
   "_notes": [

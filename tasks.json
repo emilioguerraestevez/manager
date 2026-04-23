@@ -792,7 +792,7 @@
     {
       "id": 1775190732003,
       "text": "Asistir al primer episodio: Fake News con PanchParra a las 10:00AM en TVMxq",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-16",
       "tags": [

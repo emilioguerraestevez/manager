@@ -477,7 +477,7 @@
     {
       "id": 1776090049336,
       "text": "Entrega-Recepción cosmos",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-13",
       "time": "15:00",
@@ -568,7 +568,7 @@
     {
       "id": 1775203341298,
       "text": "Desarrollo AstraMaps y Eureka! 2.0",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-30",
       "time": "",

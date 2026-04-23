@@ -3,7 +3,7 @@
     {
       "id": 1776287109063,
       "text": "Amazónica IA DevOps: Stress Test",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-15",
       "time": "10:00",
@@ -18,7 +18,7 @@
     {
       "id": 1776142429009,
       "text": "Concejal Luis Figueroa @ Café en Reforma o cerca de Hamburgo",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-14",
       "time": "17:00",
@@ -33,7 +33,7 @@
     {
       "id": 1776142364631,
       "text": "Comida FIAMMA - AMR @ Reforma 390",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-14",
       "time": "14:30",
@@ -49,7 +49,7 @@
     {
       "id": 1776142119132,
       "text": "Mesa Legal",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-14",
       "time": "09:30",
@@ -81,7 +81,7 @@
     {
       "id": 1776089984991,
       "text": "Gabinete Ampliado",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-13",
       "time": "12:00",
@@ -96,7 +96,7 @@
     {
       "id": 1776089964562,
       "text": "Gabinete de Datos",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-13",
       "time": "10:00",
@@ -111,7 +111,7 @@
     {
       "id": 1776089950941,
       "text": "Gabinete Estratégico",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-13",
       "time": "08:00",

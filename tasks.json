@@ -382,7 +382,7 @@
     {
       "id": 1775190516600,
       "text": "Desarrollar un Diagnóstico General de la Administración Pública. A entregar en 3 semanas.",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-23",
       "tags": [

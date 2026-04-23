@@ -339,7 +339,7 @@
     {
       "id": 1775190614514,
       "text": "Remodelar oficina",
-      "done": false,
+      "done": true,
       "priority": "low",
       "due": "2026-04-24",
       "assignee": "PAULA",

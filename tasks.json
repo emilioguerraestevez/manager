@@ -810,7 +810,7 @@
     {
       "id": 1776142507587,
       "text": "Cumple Lively @ Ling Ling",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-14",
       "time": "19:30",
@@ -825,7 +825,7 @@
     {
       "id": 1776142304636,
       "text": "Javier Olzer @ Café la Habana",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-14",
       "time": "12:30",
@@ -840,7 +840,7 @@
     {
       "id": 1775541421838,
       "text": "Ver el fut casa de Pato",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-08",
       "time": "20:30",
@@ -916,7 +916,7 @@
     {
       "id": 1775199598170,
       "text": "Entregarle totalplay a Mel",
-      "done": false,
+      "done": true,
       "priority": "low",
       "due": "2026-04-03",
       "time": "19:00",
@@ -989,7 +989,7 @@
     {
       "id": 1775678995718,
       "text": "reunion fff",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-22",
       "time": "09:00",
@@ -1002,7 +1002,7 @@
     {
       "id": 1775347661650,
       "text": "Cenita con mi Haye OAY @ Babero",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-16",
       "time": "19:30",

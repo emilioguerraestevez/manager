@@ -432,7 +432,7 @@
     {
       "id": 1776483874785,
       "text": "Workshop astra con Pingu",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-17",
       "time": "21:00",
@@ -462,7 +462,7 @@
     {
       "id": 1776142475923,
       "text": "Reunión con Pingüíno @ Hamburgo 18:30",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-14",
       "time": "18:30",

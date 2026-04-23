@@ -416,7 +416,7 @@
     {
       "id": 1776718048485,
       "text": "Regularización Administrativa: Yuri",
-      "done": false,
+      "done": true,
       "priority": "medium",
       "due": "2026-04-21",
       "time": "13:00",
@@ -594,7 +594,7 @@
     {
       "id": 1775199363369,
       "text": "Revisar con Vianeth, calendario de procedimientos de adquisiciones",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-09",
       "time": "07:33",
@@ -667,7 +667,7 @@
     {
       "id": 1775190674959,
       "text": "Terminar de desarrollar todos los contratos para todos los empleados",
-      "done": false,
+      "done": true,
       "priority": "high",
       "due": "2026-04-15",
       "tags": [

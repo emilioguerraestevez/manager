@@ -1,6 +1,21 @@
 {
   "coord": [
     {
+      "id": 1778517326416,
+      "text": "Comparecencia",
+      "done": false,
+      "priority": "high",
+      "due": "2026-05-18",
+      "time": "08:35",
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "task"
+      ],
+      "created": "2026-05-11T16:35:26.416Z"
+    },
+    {
       "id": 1776287109063,
       "text": "Amazónica IA DevOps: Stress Test",
       "done": true,

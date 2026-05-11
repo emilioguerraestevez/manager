@@ -1136,6 +1136,21 @@
       "taskId": 1776089950941,
       "assignees": [],
       "tags": []
+    },
+    {
+      "id": 1778517539833,
+      "createdAt": 1778517539833,
+      "updatedAt": 1778517539833,
+      "title": "Comparecencia Reunión Gabinete Estratégico",
+      "text": "Construir tarjetas de apoyo visual",
+      "profile": "coord",
+      "taskId": 1778517326416,
+      "assignees": [
+        "Paula"
+      ],
+      "tags": [
+        "task"
+      ]
     }
   ]
 }
